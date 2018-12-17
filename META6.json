@@ -1,0 +1,15 @@
+{
+    "perl"          : "6.d",
+    "name"          : "X11::Xdo",
+    "version"       : "0.0.1",
+    "description"   : "libxdo automation for X11",
+    "authors"       : [ "Steve Schulze (thundergnat)" ],
+    "provides"      : { "X11::Xdo" : "lib/X11/Xdo.pm6" },
+    "depends"       : [ ],
+    "build-depends" : [ ],
+    "test-depends"  : [ "Test" ],
+    "source-type"   : "git",
+    "source-url"    : "git://github.com/thundergnat/X11-Xdo.git",
+    "license"       : "Artistic-2.0",
+    "tags"          : [ "X11", "automation" ]
+}
