@@ -625,12 +625,7 @@ method send-keysequence-list($window = 0, Carray @keys, int $pressed, int, $modi
 
 =head2 Desktop
 
-NYI
-
-=head2 Display
-
 Mostly NYI
-
 
 =head5 method .get-desktop-dimensions( $screen? )
 
@@ -649,6 +644,11 @@ Returns three integers:
 =item $x:       x dimension of the desktop window.
 =item $y:       y dimension of the desktop window.
 =item $screen   index of screen for which the dimensions are reported.
+
+=head2 Display
+
+NYI
+
 
 =head1 AUTHOR
 

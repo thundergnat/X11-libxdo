@@ -7,6 +7,8 @@ Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordan
 
 Note: This is a WORK IN PROGRESS. The tests are under construction and many of them probably won't work on your computer. Several functions are not yet implemented, but a large core group is.
 
+Many of the test files do not actally run tests that can be chaecked for correctness. (Many of the object move and resize test for example.) Rather, they attempt to perform and action and fail/pass based on if the attempt does or doesn't produce an error.
+
 Not all libxdo functions are supported by every window manager. In general, mouse info & move and window info, move, & resize routines seem to be well supported, others... not so much.
 
 SYNOPSIS
@@ -47,7 +49,7 @@ DESCRIPTION
 
 Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
 
-Requires that libxdo and (for some functionality) xdtool command line utility is installed and accesable.
+Requires that libxdo and (for some functionality) xdtool command line utility is installed and accessible.
 
 <table class="pod-table">
 <thead><tr>
@@ -589,11 +591,6 @@ Returns 0 on success !0 on failure.
 Desktop
 -------
 
-NYI
-
-Display
--------
-
 Mostly NYI
 
 ##### method .get-desktop-dimensions( $screen? )
@@ -613,6 +610,11 @@ Returns three integers:
   * $y: y dimension of the desktop window.
 
   * $screen index of screen for which the dimensions are reported.
+
+Display
+-------
+
+NYI
 
 AUTHOR
 ======
