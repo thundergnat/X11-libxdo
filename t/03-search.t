@@ -9,7 +9,7 @@ my $command = $*KERNEL ~~ 'Mac' ?? 'open' !! 'xdg-open';
 my $location = IO::Path.new($?FILE).dirname;
 
 shell "$command $location/test.html" or die 'Could not open test page';
-sleep .5;
+sleep 1.5;
 
 my $match = 'Test Page';
 
