@@ -12,7 +12,7 @@ Note: This is a WORK IN PROGRESS. The tests are under construction and many of
 them probably won't work on your computer. Several functions are not yet
 implemented, but a large core group is.
 
-Many of the test files do not actally run tests that can be chaecked for
+Many of the test files do not actally run tests that can be checked for
 correctness. (Many of the object move and resize test for example.)
 Rather, they attempt to perform and action and fail/pass based on if the attempt
 does or doesn't produce an error.
@@ -260,7 +260,7 @@ Takes two parameters:
 
 Returns nothing.
 
-=head5 method .mouse-button-multiple( $window, $button, $delay? )
+=head5 method .mouse-button-multiple( $window, $button, $repeat = 2, $delay? )
 
 Send a one or more clicks for a specific mouse button at the current mouse
 location.
@@ -345,6 +345,9 @@ Takes one optional parameter:
 Returns standard geometry string
 
 =item Str $geometry  "{$width}x{$height}+{$x}+{$y}" format
+
+400x200+250+450  means a 400 pixel wide by 200 pixel high window with the top
+left corner at 250 x position 450 y position.
 
 =head5 method .get-window-name( $window? )
 

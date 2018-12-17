@@ -7,7 +7,7 @@ Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordan
 
 Note: This is a WORK IN PROGRESS. The tests are under construction and many of them probably won't work on your computer. Several functions are not yet implemented, but a large core group is.
 
-Many of the test files do not actally run tests that can be chaecked for correctness. (Many of the object move and resize test for example.) Rather, they attempt to perform and action and fail/pass based on if the attempt does or doesn't produce an error.
+Many of the test files do not actally run tests that can be checked for correctness. (Many of the object move and resize test for example.) Rather, they attempt to perform and action and fail/pass based on if the attempt does or doesn't produce an error.
 
 Not all libxdo functions are supported by every window manager. In general, mouse info & move and window info, move, & resize routines seem to be well supported, others... not so much.
 
@@ -242,7 +242,7 @@ Takes two parameters:
 
 Returns nothing.
 
-##### method .mouse-button-multiple( $window, $button, $delay? )
+##### method .mouse-button-multiple( $window, $button, $repeat = 2, $delay? )
 
 Send a one or more clicks for a specific mouse button at the current mouse location.
 
@@ -332,6 +332,8 @@ Takes one optional parameter:
 Returns standard geometry string
 
   * Str $geometry "{$width}x{$height}+{$x}+{$y}" format
+
+400x200+250+450 means a 400 pixel wide by 200 pixel high window with the top left corner at 250 x position 450 y position.
 
 ##### method .get-window-name( $window? )
 
