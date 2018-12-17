@@ -1,5 +1,5 @@
 {
-    "perl"          : "6.d",
+    "perl"          : "6",
     "name"          : "X11::Xdo",
     "version"       : "0.0.1",
     "description"   : "libxdo automation for X11",

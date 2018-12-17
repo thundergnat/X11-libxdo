@@ -30,7 +30,7 @@ END
 if @w > 0 {
     my $w = @w[0];
     say "Window name: ", $xdo.get-window-name( $w );
-    $xdo.send-key($w, 'Tab');
+    $xdo.send-sequence($w, 'Tab');
     $xdo.type($w, "Hello World! " x 6);
     $xdo.type($w, $para, 100000);
 }
@@ -41,7 +41,7 @@ $xdo.activate-window($active);
 $xdo.raise-window($active);
 sleep .5;
 
-CATCH { default { fail } }
+CATCH { default { note $_; fail } }
 
 ok 1;
 done-testing;

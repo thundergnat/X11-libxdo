@@ -16,7 +16,7 @@ Many of the test files do not actally run tests that can be chaecked for
 correctness. (Many of the object move and resize test for example.)
 Rather, they attempt to perform and action and fail/pass based on if the attempt
 does or doesn't produce an error.
- 
+
 Not all libxdo functions are supported by every window manager. In general,
 mouse info & move and window info, move, & resize routines seem to be well
 supported, others... not so much.
@@ -58,7 +58,7 @@ supported, others... not so much.
 
 Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
 
-Requires that libxdo and (for some functionality) xdtool command line utility is installed and accesable.
+Requires that libxdo and (for some functionality) xdtool command line utility is installed and accessible.
 
 =begin table
 Platform 	          |  Install Method
@@ -118,7 +118,24 @@ Takes (up to) three parameters:
 =item Bool  $visible: named (optional) True (default) to only search visible windows. False for all windows.
 =item into  $depth: named (optional) Set to 0 (default to search all levels, 1 to only search toplevel windows, 2 to include their direct children, etc.
 
+=end pod
 
+#`[ SEARCH
+TODO - need to figure out the parameter passing. Probably the most complicated
+routine to bind to.
+
+Search for windows.
+
+search: the search query.
+* @param windowlist_ret the list of matching windows to return
+* @param nwindows_ret the number of windows (length of windowlist_ret)
+* @see xdo_search_t
+*/
+int xdo_search_windows(const xdo_t *xdo, const xdo_search_t *search,
+                    Window **windowlist_ret, unsigned int *nwindows_ret);
+]
+
+=begin pod
 
 =head2 Mouse
 
@@ -518,25 +535,6 @@ Takes two parameters:
 =item int $value:  If you set it to 1, the window manager will usually not draw borders on the window, etc. If you set it to 0, the window manager will see it like a normal application window.
 
 Returns 0 on success !0 on failure.
-
-=end pod
-
-#`[ SEARCH
-TODO - need to figure out the parameter passing. Probably the mose complicate
-routine to bind to.
-
-Search for windows.
-
-search: the search query.
-* @param windowlist_ret the list of matching windows to return
-* @param nwindows_ret the number of windows (length of windowlist_ret)
-* @see xdo_search_t
-*/
-int xdo_search_windows(const xdo_t *xdo, const xdo_search_t *search,
-                    Window **windowlist_ret, unsigned int *nwindows_ret);
-]
-
-=begin pod
 
 =head2 Keystrokes
 
@@ -1170,7 +1168,6 @@ class Xdo is export {
        my $s = $depth   ?? "--maxdepth $depth" !! '';
        (shell "xdotool search --onlyvisible  --name \"$query\"", :out, :err).out.lines».Int;
    }
-
 
 
    #`[
