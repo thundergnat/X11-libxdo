@@ -11,5 +11,5 @@
     "source-type"   : "git",
     "source-url"    : "git://github.com/thundergnat/X11-Xdo.git",
     "license"       : "Artistic-2.0",
-    "tags"          : [ "X11", "automation" ]
+    "tags"          : [ "X11", "automation", "mouse", "window" ]
 }
