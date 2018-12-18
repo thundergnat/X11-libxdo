@@ -89,6 +89,8 @@ Takes no parameters.
 
 Returns the version string of the current libxdo library.
 
+--
+
     .get_symbol_map()
 
 Get modifier symbol pairs.
@@ -96,6 +98,8 @@ Get modifier symbol pairs.
 Takes no parameters.
 
 Returns an array of modifier symbol pairs.
+
+--
 
     .search ($query, :$visible = True, :$depth = 0)
 
@@ -126,6 +130,8 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
+--
+
     .move-mouse-relative( $delta-x, $delta-y )
 
 Move the mouse relative to it's current position.
@@ -137,6 +143,8 @@ Takes two parameters:
   * int $delta-y: the distance in pixels to move on the Y axis.
 
 Returns 0 on success !0 on failure.
+
+--
 
     .move-mouse-relative-to-window( $x, $y, $window )
 
@@ -152,6 +160,8 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
+--
+
     .get-mouse-location()
 
 Get the current mouse location (coordinates and screen ID number).
@@ -165,6 +175,8 @@ Returns three integers:
   * int $y: the y coordinate of the mouse pointer.
 
   * int $screen: the index number of the screen the mouse pointer is located on.
+
+--
 
     .get-mouse-info()
 
@@ -182,6 +194,8 @@ Returns four integers:
 
   * int $screen: the index number of the screen the mouse pointer is located on.
 
+--
+
     .wait-for-mouse-to-move-from( $origin-x, $origin-y )
 
 Wait for the mouse to move from a location. This function will block until the condition has been satisfied.
@@ -193,6 +207,8 @@ Takes two integer parameters:
   * int $origin-y: the Y position you expect the mouse to move from.
 
 Returns nothing.
+
+--
 
     .wait-for-mouse-to-move-to( $dest-x, $dest-y )
 
@@ -206,6 +222,8 @@ Takes two integer parameters:
 
 Returns nothing.
 
+--
+
     .mouse-button-down( $window, $button )
 
 Send a mouse press (aka mouse down) for a given button at the current mouse location.
@@ -217,6 +235,8 @@ Takes two parameters:
   * int $button: The mouse button. Generally, 1 is left, 2 is middle, 3 is right, 4 is wheel up, 5 is wheel down.
 
 Returns nothing.
+
+--
 
     .mouse-button-up( $window, $button )
 
@@ -230,6 +250,8 @@ Takes two parameters:
 
 Returns nothing.
 
+--
+
     .mouse-button-click( $window, $button )
 
 Send a click for a specific mouse button at the current mouse location.
@@ -241,6 +263,8 @@ Takes two parameters:
   * int $button: The mouse button. Generally, 1 is left, 2 is middle, 3 is right, 4 is wheel up, 5 is wheel down.
 
 Returns nothing.
+
+--
 
     .mouse-button-multiple( $window, $button, $repeat = 2, $delay? )
 
@@ -257,6 +281,8 @@ Takes three parameters:
   * int $delay: (optional, defaults to 8000) useconds delay between clicks. 8000 is a reasonable default.
 
 Returns nothing.
+
+--
 
     .get-window-under-mouse()
 
@@ -279,6 +305,8 @@ Returns one integer:
 
   * $screen: Window ID of active window.
 
+--
+
     .select-window-with-mouse()
 
 Get a window ID by clicking on it. This function blocks until a selection is made.
@@ -288,6 +316,8 @@ Takes no parameters.
 Returns one integer:
 
   * $screen: Window ID of active window.
+
+--
 
     .get-window-location( $window?, $scrn? )
 
@@ -307,6 +337,8 @@ Returns three integers:
 
   * $screen index of screen the window is located on.
 
+--
+
     .get-window-size( $window? )
 
 Get a window's size.
@@ -320,6 +352,8 @@ Returns two integers:
   * int $width the width of the queried window in pixels.
 
   * int $height the height of the queried window in pixels.
+
+--
 
     .get-window-geometry( $window? )
 
@@ -335,6 +369,8 @@ Returns standard geometry string
 
 400x200+250+450 means a 400 pixel wide by 200 pixel high window with the top left corner at 250 x position 450 y position.
 
+--
+
     .get-window-name( $window? )
 
 Get a window's name, if any.
@@ -347,6 +383,8 @@ Returns one string:
 
   * Str $name Name of the queried window.
 
+--
+
     .get-window-pid( $window )
 
 Get the PID or the process owning a window. Not all applications support this. It looks at the _NET_WM_PID property of the window.
@@ -358,6 +396,8 @@ Takes one parameter:
 Returns one integer:
 
   * int $pid process id, or 0 if no pid found.
+
+--
 
     .set-window-size( $window, $width, $height, $flags? = 0 )
 
@@ -385,6 +425,8 @@ HINTS:
 
 Returns 0 on success !0 on failure.
 
+--
+
     .focus-window( $window )
 
 Set the focus on a window.
@@ -395,6 +437,8 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
+--
+
     .get-focused-window( )
 
 Get the ID of the window currently having focus.
@@ -404,6 +448,8 @@ Takes no parameters:
 Returns one parameter:
 
   * Window $window: ID of window currently having focus.
+
+--
 
     .activate-window( $window )
 
@@ -419,6 +465,8 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
+--
+
     .raise-window( $window )
 
 Raise a window to the top of the window stack. This is also sometimes termed as bringing the window forward.
@@ -428,6 +476,8 @@ Takes one parameter:
   * Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
+
+--
 
     .minimize( $window )
 
@@ -439,6 +489,8 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
+--
+
     .map-window( $window )
 
 Map a window. This mostly means to make the window visible if it is not currently mapped.
@@ -449,6 +501,8 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
+--
+
     .unmap-window( $window )
 
 Unmap a window. This means to make the window invisible and possibly remove it from the task bar on some WMs.
@@ -458,6 +512,8 @@ Takes one parameter:
   * Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
+
+--
 
     .move-window( $window )
 
@@ -475,6 +531,8 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
+--
+
     .wait_for_window_active( $window )
 
 Wait for a window to be active or not active. Requires your window manager to support this. Uses _NET_ACTIVE_WINDOW from the EWMH spec.
@@ -484,6 +542,8 @@ Takes one parameter:
   * Window $window: Window ID. If none supplied, uses active window ID.
 
 Returns 0 on success !0 on failure.
+
+--
 
     .close-window( $window )
 
@@ -497,6 +557,8 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
+--
+
     .kill-window( $window )
 
 TODO not working under Cinnamon?
@@ -508,6 +570,8 @@ Takes one parameter:
   * Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
 Returns 0 on success !0 on failure.
+
+--
 
     .override-redirect( $window, $value )
 
@@ -522,6 +586,8 @@ Takes two parameters:
   * int $value: If you set it to 1, the window manager will usually not draw borders on the window, etc. If you set it to 0, the window manager will see it like a normal application window.
 
 Returns 0 on success !0 on failure.
+
+--
 
     .wait-for-window-map-state( $window, $state )
 
@@ -541,6 +607,8 @@ Takes two parameters:
 
   * int map_state: the state to wait for.
 
+--
+
     .set-window-state( $window, $action, $property)
 
 Change window state
@@ -552,6 +620,8 @@ Takes three parameters:
   * ulong $action: the _NET_WM_STATE action
 
   * str $property: the property to change
+
+--
 
         ACTIONS:
         _NET_WM_STATE_REMOVE: 0 -  remove/unset property
@@ -590,6 +660,8 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
+--
+
     .send-sequence( $window, $string, $delay? )
 
 This allows you to send keysequences by symbol name. Any combination of X11 KeySym names separated by '+' are valid. Single KeySym names are valid, too.
@@ -606,6 +678,8 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
+--
+
     .send-key-press( $window, $string, $delay? )
 
 Send key press (down) events for the given key sequence.
@@ -621,6 +695,8 @@ Takes three parameters:
   * int $delay: Optional delay between key down events in microseconds.
 
 Returns 0 on success !0 on failure.
+
+--
 
     .send-key-release( $window, $string, $delay? )
 
@@ -659,6 +735,8 @@ Returns three integers:
 
   * $screen index of screen for which the dimensions are reported.
 
+--
+
     .set-number-of-desktops($number)
 
 Set the number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
@@ -668,6 +746,8 @@ Takes one parameter:
   * $ndesktops: the new number of desktops to set.
 
 Returns 0 on success, !0 on failure
+
+--
 
     .get-number-of-desktops()
 
@@ -679,6 +759,8 @@ Returns one integer:
 
   * $number: the current number of desktops (workspaces).
 
+--
+
     .set-current-desktop($number)
 
 Switch to another desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
@@ -686,6 +768,8 @@ Switch to another desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
 Takes one parameter:
 
   * int $number The desktop number to switch to.
+
+--
 
     .get-current-desktop()
 
@@ -696,6 +780,8 @@ Takes no parmeters:
 Returns one integer:
 
   * int $number The index number of the current desktop (workspace).
+
+--
 
     .move-window-to-desktop($window, $number)
 
@@ -708,6 +794,8 @@ Takes two parameters:
   * int $desktop: the desktop destination for the window
 
 Returns 0 on success, !0 on failure
+
+--
 
     .get-desktop-for-window($window)
 
@@ -723,6 +811,8 @@ Returns one integer:
 
   * int $desktop: the desktop where the window is located.
 
+--
+
     .get-desktop-viewport()
 
 Get the position of the current viewport.
@@ -736,6 +826,8 @@ Returns two values:
   * int $x: the X value of the top left corner of the viewport.
 
   * int $y: the Y value of the top left corner of the viewport.
+
+--
 
     .set-desktop-viewport($x, $y)
 

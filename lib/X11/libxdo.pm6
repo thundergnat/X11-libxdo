@@ -106,6 +106,7 @@ Takes no parameters.
 
 Returns the version string of the current libxdo library.
 
+--
 =begin code
 .get_symbol_map()
 =end code
@@ -116,6 +117,7 @@ Takes no parameters.
 
 Returns an array of modifier symbol pairs.
 
+--
 =begin code
 .search ($query, :$visible = True, :$depth = 0)
 =end code
@@ -149,7 +151,6 @@ int xdo_search_windows(const xdo_t *xdo, const xdo_search_t *search,
 
 =head2 Mouse
 
-
 =begin code
 .move-mouse( $x, $y, $screen )
 =end code
@@ -164,6 +165,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .move-mouse-relative( $delta-x, $delta-y )
 =end code
@@ -177,6 +179,7 @@ Takes two parameters:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .move-mouse-relative-to-window( $x, $y, $window )
 =end code
@@ -192,6 +195,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .get-mouse-location()
 =end code
@@ -206,6 +210,7 @@ Returns three integers:
 =item int $y:       the y coordinate of the mouse pointer.
 =item int $screen:  the index number of the screen the mouse pointer is located on.
 
+--
 =begin code
 .get-mouse-info()
 =end code
@@ -221,6 +226,7 @@ Returns four integers:
 =item Window $window:  the ID number of the window the mouse pointer is located on.
 =item int $screen:  the index number of the screen the mouse pointer is located on.
 
+--
 =begin code
 .wait-for-mouse-to-move-from( $origin-x, $origin-y )
 =end code
@@ -235,6 +241,7 @@ Takes two integer parameters:
 
 Returns nothing.
 
+--
 =begin code
 .wait-for-mouse-to-move-to( $dest-x, $dest-y )
 =end code
@@ -249,6 +256,7 @@ Takes two integer parameters:
 
 Returns nothing.
 
+--
 =begin code
 .mouse-button-down( $window, $button )
 =end code
@@ -263,6 +271,7 @@ Takes two parameters:
 
 Returns nothing.
 
+--
 =begin code
 .mouse-button-up( $window, $button )
 =end code
@@ -277,6 +286,7 @@ Takes two parameters:
 
 Returns nothing.
 
+--
 =begin code
 .mouse-button-click( $window, $button )
 =end code
@@ -290,6 +300,7 @@ Takes two parameters:
 
 Returns nothing.
 
+--
 =begin code
 .mouse-button-multiple( $window, $button, $repeat = 2, $delay? )
 =end code
@@ -306,6 +317,7 @@ Takes three parameters:
 
 Returns nothing.
 
+--
 =begin code
 .get-window-under-mouse()
 =end code
@@ -331,6 +343,7 @@ Returns one integer:
 
 =item $screen:  Window ID of active window.
 
+--
 =begin code
 .select-window-with-mouse()
 =end code
@@ -344,6 +357,7 @@ Returns one integer:
 
 =item $screen:  Window ID of active window.
 
+--
 =begin code
 .get-window-location( $window?, $scrn? )
 =end code
@@ -361,6 +375,7 @@ Returns three integers:
 =item $y:       y coordinate of top left corner of window.
 =item $screen   index of screen the window is located on.
 
+--
 =begin code
 .get-window-size( $window? )
 =end code
@@ -376,6 +391,7 @@ Returns two integers:
 =item int $width     the width of the queried window in pixels.
 =item int $height    the height of the queried window in pixels.
 
+--
 =begin code
 .get-window-geometry( $window? )
 =end code
@@ -393,6 +409,7 @@ Returns standard geometry string
 400x200+250+450  means a 400 pixel wide by 200 pixel high window with the top
 left corner at 250 x position 450 y position.
 
+--
 =begin code
 .get-window-name( $window? )
 =end code
@@ -407,6 +424,7 @@ Returns one string:
 
 =item Str $name   Name of the queried window.
 
+--
 =begin code
 .get-window-pid( $window )
 =end code
@@ -422,6 +440,7 @@ Returns one integer:
 
 =item int $pid   process id, or 0 if no pid found.
 
+--
 =begin code
 .set-window-size( $window, $width, $height, $flags? = 0 )
 =end code
@@ -448,6 +467,7 @@ HINTS:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .focus-window( $window )
 =end code
@@ -460,6 +480,7 @@ Takes one  parameter:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .get-focused-window( )
 =end code
@@ -473,6 +494,7 @@ Returns one parameter:
 =item Window $window:  ID of window currently having focus.
 
 
+--
 =begin code
 .activate-window( $window )
 =end code
@@ -489,6 +511,7 @@ Takes one  parameter:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .raise-window( $window )
 =end code
@@ -502,6 +525,7 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .minimize( $window )
 =end code
@@ -514,6 +538,7 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .map-window( $window )
 =end code
@@ -527,6 +552,7 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .unmap-window( $window )
 =end code
@@ -540,6 +566,7 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .move-window( $window )
 =end code
@@ -556,6 +583,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .wait_for_window_active( $window )
 =end code
@@ -570,6 +598,7 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .close-window( $window )
 =end code
@@ -584,6 +613,7 @@ Takes one  parameter:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .kill-window( $window )
 =end code
@@ -598,6 +628,7 @@ Takes one  parameter:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .override-redirect( $window, $value )
 =end code
@@ -614,6 +645,7 @@ Takes two parameters:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .wait-for-window-map-state( $window, $state )
 =end code
@@ -632,6 +664,7 @@ Takes two parameters:
 =item int map_state:  the state to wait for.
 
 
+--
 =begin code
 .set-window-state( $window, $action, $property)
 =end code
@@ -644,6 +677,7 @@ Takes three parameters:
 =item ulong  $action: the _NET_WM_STATE action
 =item str  $property: the property to change
 
+--
 =begin code
     ACTIONS:
     _NET_WM_STATE_REMOVE: 0 -  remove/unset property
@@ -688,6 +722,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .send-sequence( $window, $string, $delay? )
 =end code
@@ -706,6 +741,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .send-key-press( $window, $string, $delay? )
 =end code
@@ -722,6 +758,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
+--
 =begin code
 .send-key-release( $window, $string, $delay? )
 =end code
@@ -782,6 +819,7 @@ Returns three integers:
 =item $screen   index of screen for which the dimensions are reported.
 
 
+--
 =begin code
 .set-number-of-desktops($number)
 =end code
@@ -795,6 +833,7 @@ Takes one parameter:
 Returns 0 on success, !0 on failure
 
 
+--
 =begin code
 .get-number-of-desktops()
 =end code
@@ -807,6 +846,7 @@ Returns one integer:
 
 =item $number: the current number of desktops (workspaces).
 
+--
 =begin code
 .set-current-desktop($number)
 =end code
@@ -818,6 +858,7 @@ Takes one parameter:
 =item int $number The desktop number to switch to.
 
 
+--
 =begin code
 .get-current-desktop()
 =end code
@@ -831,6 +872,7 @@ Returns one integer:
 =item int $number The index number of the current desktop (workspace).
 
 
+--
 =begin code
 .move-window-to-desktop($window, $number)
 =end code
@@ -844,6 +886,7 @@ Takes two parameters:
 
 Returns 0 on success, !0 on failure
 
+--
 =begin code
 .get-desktop-for-window($window)
 =end code
@@ -860,6 +903,7 @@ Returns one integer:
 
 =item int $desktop: the desktop where the window is located.
 
+--
 =begin code
 .get-desktop-viewport()
 =end code
@@ -875,6 +919,7 @@ Returns two values:
 =item int $x: the X value of the top left corner of the viewport.
 =item int $y: the Y value of the top left corner of the viewport.
 
+--
 =begin code
 .set-desktop-viewport($x, $y)
 =end code
