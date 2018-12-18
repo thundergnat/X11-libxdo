@@ -679,7 +679,7 @@ Licensed under The Artistic 2.0; see LICENSE.
 use NativeCall;
 
 constant XDO    := Pointer;
-constant SCREEN := int8;
+constant Screen-index := int8;
 
 class Xdo is export {
     has XDO $.id is rw;
@@ -703,8 +703,8 @@ class Xdo is export {
       y:          the target Y coordinate on the screen in pixels.
       screen ID:  the screen (number) you want to move on.
     ]
-    method move-mouse (int32 $x, int32 $y is copy, SCREEN $screen is copy) {
-        sub xdo_move_mouse(XDO, int32, int32, SCREEN) returns int32 is native('xdo') { * };
+    method move-mouse (int32 $x, int32 $y is copy, Screen-index $screen is copy) {
+        sub xdo_move_mouse(XDO, int32, int32, Screen-index) returns int32 is native('xdo') { * };
         ($, $, $screen ) = self.get-mouse-location unless $screen;
         xdo_move_mouse(self.id, $x, $y, $screen +& 15);
     }
@@ -795,9 +795,9 @@ class Xdo is export {
     Get the current mouse location (coordinates and screen ID number).
     ]
     method get-mouse-location () {
-        sub xdo_get_mouse_location(XDO, int32 is rw, int32 is rw, SCREEN is rw) returns int32 is native('xdo') { * };
+        sub xdo_get_mouse_location(XDO, int32 is rw, int32 is rw, Screen-index is rw) returns int32 is native('xdo') { * };
         my int32 ($x, $y);
-        my SCREEN $screen;
+        my Screen-index $screen;
         my $error = xdo_get_mouse_location(self.id, $x, $y, $screen);
         $x, $y, $screen +& 15
     }
@@ -808,9 +808,9 @@ class Xdo is export {
     Returns four integers: $x, $y, $window-ID, $screen-ID.
     ]
     method get-mouse-info () {
-        sub xdo_get_mouse_location2(XDO, int32 is rw, int32 is rw, SCREEN is rw, Window is rw) returns int32 is native('xdo') { * };
+        sub xdo_get_mouse_location2(XDO, int32 is rw, int32 is rw, Screen-index is rw, Window is rw) returns int32 is native('xdo') { * };
         my int32 ($x, $y);
-        my SCREEN $screen;
+        my Screen-index $screen;
         my Window $window;
         my $error = xdo_get_mouse_location2(self.id, $x, $y, $screen, $window);
         $x, $y, $window, $screen +& 15
@@ -935,10 +935,10 @@ class Xdo is export {
     Optional argument screen ID. If none supplied, uses active screen ID.
     Returns three integers: $x, $y, $screen-ID.
     ]
-    method get-window-location (Window $window? is copy, SCREEN $screen? is copy ) {
+    method get-window-location (Window $window? is copy, Screen-index $screen? is copy ) {
         my int32 ($x, $y);
         $screen = 0 unless $screen;
-        sub xdo_get_window_location(XDO, Window, int32 is rw, int32 is rw, SCREEN is rw) is native('xdo') { * };
+        sub xdo_get_window_location(XDO, Window, int32 is rw, int32 is rw, Screen-index is rw) is native('xdo') { * };
         $window = self.get-active-window unless $window;
         xdo_get_window_location( self.id, $window, $x, $y, $screen );
         $x, $y, $screen +& 15
@@ -1244,10 +1244,10 @@ class Xdo is export {
      If Xineram is disabled, we will report the root window's dimensions
      for the given screen.
    ]
-   method get-desktop-dimensions (SCREEN $screen? is copy) {
+   method get-desktop-dimensions (Screen-index $screen? is copy) {
        my uint32 ($width, $height);
        $screen //= 0;
-       sub xdo_get_viewport_dimensions(XDO, uint32 is rw, uint32 is rw, SCREEN) returns int32 is native('xdo') { * };
+       sub xdo_get_viewport_dimensions(XDO, uint32 is rw, uint32 is rw, Screen-index) returns int32 is native('xdo') { * };
        xdo_get_viewport_dimensions(self.id, $width, $height, $screen);
        $width, $height, $screen +& 15;
    }
