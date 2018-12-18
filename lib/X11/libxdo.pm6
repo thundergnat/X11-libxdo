@@ -1,4 +1,4 @@
-unit module X11::libxdo:ver<0.0.2>:auth<github:thundergnat>;
+unit module X11::libxdo:ver<0.0.3>:auth<github:thundergnat>;
 
 use X11::Xlib::Raw;
 
@@ -93,7 +93,6 @@ There are several broad categories of methods available.
 =item Window
 =item Keystrokes
 =item Desktop
-=item Display
 
 =head2 Miscellaneous
 
@@ -177,7 +176,7 @@ Takes three parameters:
 
 =item int $x:      the target X coordinate on the screen in pixels.
 =item int $y:      the target Y coordinate on the screen in pixels.
-=item int $window: ID of the window.
+=item Window $window: ID of the window.
 
 Returns 0 on success !0 on failure.
 
@@ -203,7 +202,7 @@ Returns four integers:
 
 =item int $x:       the x coordinate of the mouse pointer.
 =item int $y:       the y coordinate of the mouse pointer.
-=item int $window:  the ID number of the window the mouse pointer is located on.
+=item Window $window:  the ID number of the window the mouse pointer is located on.
 =item int $screen:  the index number of the screen the mouse pointer is located on.
 
 =head5 method .wait-for-mouse-to-move-from( $origin-x, $origin-y )
@@ -237,7 +236,7 @@ location.
 
 Takes two parameters:
 
-=item int $window:  The ID# of the window receiving the event. 0 for the current window.
+=item Window $window:  The ID# of the window receiving the event. 0 for the current window.
 =item int $button:  The mouse button. Generally, 1 is left, 2 is middle, 3 is right, 4 is wheel up, 5 is wheel down.
 
 Returns nothing.
@@ -249,7 +248,7 @@ location.
 
 Takes two parameters:
 
-=item int $window:  The ID# of the window receiving the event. 0 for the current window.
+=item Window $window:  The ID# of the window receiving the event. 0 for the current window.
 =item int $button:  The mouse button. Generally, 1 is left, 2 is middle, 3 is right, 4 is wheel up, 5 is wheel down.
 
 Returns nothing.
@@ -260,7 +259,7 @@ Send a click for a specific mouse button at the current mouse location.
 
 Takes two parameters:
 
-=item int $window:  The ID# of the window receiving the event. 0 for the current window.
+=item Window $window:  The ID# of the window receiving the event. 0 for the current window.
 =item int $button:  The mouse button. Generally, 1 is left, 2 is middle, 3 is right, 4 is wheel up, 5 is wheel down.
 
 Returns nothing.
@@ -272,7 +271,7 @@ location.
 
 Takes three parameters:
 
-=item int $window:  The ID# of the window receiving the event. 0 for the current window.
+=item Window $window:  The ID# of the window receiving the event. 0 for the current window.
 =item int $button:  The mouse button. Generally, 1 is left, 2 is middle, 3 is right, 4 is wheel up, 5 is wheel down.
 =item int $repeat:  (optional, defaults to 2) number of times to click the button.
 =item int $delay:   (optional, defaults to 8000) useconds delay between clicks. 8000 is a reasonable default.
@@ -317,7 +316,7 @@ Get a window's location.
 
 Takes two optional parameters:
 
-=item int $window: Optional parameter window ID. If none supplied, uses active window ID.
+=item Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 =item int $screen: Optional parameter screen ID. If none supplied, uses active screen ID.
 
 Returns three integers:
@@ -332,7 +331,7 @@ Get a window's size.
 
 Takes one optional parameter:
 
-=item int $window: Optional parameter window ID. If none supplied, uses active window ID.
+=item Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
 Returns two integers:
 
@@ -345,7 +344,7 @@ Get a windows geometry string.
 
 Takes one optional parameter:
 
-=item int $window: Optional parameter window ID. If none supplied, uses active window ID.
+=item Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
 Returns standard geometry string
 
@@ -360,7 +359,7 @@ Get a window's name, if any.
 
 Takes one optional parameter:
 
-=item int $window: Optional parameter window ID. If none supplied, uses active window ID.
+=item Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
 Returns one string:
 
@@ -373,7 +372,7 @@ It looks at the _NET_WM_PID property of the window.
 
 Takes one  parameter:
 
-=item int $window: Window ID.
+=item Window $window: Window ID.
 
 Returns one integer:
 
@@ -385,7 +384,7 @@ Set the window size.
 
 Takes four parameters:
 
-=item int $window:   the ID of the window to resize.
+=item Window $window:   the ID of the window to resize.
 =item int $width:    the new desired width.
 =item int $height:   the new desired height
 
@@ -409,7 +408,7 @@ Set the focus on a window.
 
 Takes one  parameter:
 
-=item int $window:  ID of window to focus on.
+=item Window $window:  ID of window to focus on.
 
 Returns 0 on success !0 on failure.
 
@@ -421,7 +420,7 @@ Takes no parameters:
 
 Returns one parameter:
 
-=item int $window:  ID of window currently having focus.
+=item Window $window:  ID of window currently having focus.
 
 
 =head5 method .activate-window( $window )
@@ -434,7 +433,7 @@ for a variety of reasons, but it requires window manager support.
 
 Takes one  parameter:
 
-=item int $window: Window ID.
+=item Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -445,7 +444,7 @@ termed as bringing the window forward.
 
 Takes one parameter:
 
-=item int $window: Window ID.
+=item Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -455,7 +454,7 @@ Minimize a window.
 
 Takes one parameter:
 
-=item int $window: Window ID.
+=item Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -466,7 +465,7 @@ not currently mapped.
 
 Takes one parameter:
 
-=item int $window: Window ID.
+=item Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -477,7 +476,7 @@ from the task bar on some WMs.
 
 Takes one parameter:
 
-=item int $window: Window ID.
+=item Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -489,7 +488,7 @@ The top left corner of the window will be moved to the x,y coordinate.
 
 Takes three parameters:
 
-=item int $window: Window ID of the window to move.
+=item Window $window: Window ID of the window to move.
 =item int $x :     the X coordinate to move to.
 =item int $y:      the Y coordinate to move to.
 
@@ -503,7 +502,7 @@ Uses _NET_ACTIVE_WINDOW from the EWMH spec.
 
 Takes one parameter:
 
-=item int $window: Window ID. If none supplied, uses active window ID.
+=item Window $window: Window ID. If none supplied, uses active window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -515,7 +514,7 @@ Close a window without trying to kill the client.
 
 Takes one  parameter:
 
-=item int $window: Optional parameter window ID. If none supplied, uses active window ID.
+=item Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -527,7 +526,7 @@ Kill a window and the client owning it.
 
 Takes one  parameter:
 
-=item int $window: Optional parameter window ID. If none supplied, uses active window ID.
+=item Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -540,10 +539,54 @@ whether or not a window manager will manage this window.
 
 Takes two parameters:
 
-=item int $window: Optional parameter window ID. If none supplied, uses active window ID.
+=item Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 =item int $value:  If you set it to 1, the window manager will usually not draw borders on the window, etc. If you set it to 0, the window manager will see it like a normal application window.
 
 Returns 0 on success !0 on failure.
+
+=head5 method .wait-for-window-map-state( $window, $state )
+
+Wait for a window to have a specific map state.
+
+State possibilities:
+
+=item 0 IsUnmapped - window is not displayed.
+=item 1 IsViewable - window is mapped and shown (though may be clipped by windows on top of it)
+=item 2 IsUnviewable - window is mapped but a parent window is unmapped.
+
+Takes two parameters:
+
+=item Window $window: Window ID, the window you want to wait for.
+=item int map_state:  the state to wait for.
+
+
+=head5 method .set-window-state( $window, $action, $property)
+
+Change window state
+
+Takes three parameters:
+
+=item Window $window: Window ID, the window you want to act on.
+=item ulong  $action: the _NET_WM_STATE action
+=item str  $property: the property to change
+
+    ACTIONS:
+    _NET_WM_STATE_REMOVE: 0 -  remove/unset property
+    _NET_WM_STATE_ADD:    1 -  add/set property
+    _NET_WM_STATE_TOGGLE: 2 -  toggle property
+
+    SOME POSSIBLE PROPERTIES:
+    _NET_WM_STATE_MAXIMIZED_VERT
+    _NET_WM_STATE_MAXIMIZED_HORZ
+    _NET_WM_STATE_SHADED
+    _NET_WM_STATE_HIDDEN
+    _NET_WM_STATE_FULLSCREEN
+    _NET_WM_STATE_ABOVE
+    _NET_WM_STATE_BELOW
+
+Retuns 0 on sucess, !0 on failure
+
+
 
 =head2 Keystrokes
 
@@ -654,9 +697,96 @@ Returns three integers:
 =item $y:       y dimension of the desktop window.
 =item $screen   index of screen for which the dimensions are reported.
 
-=head2 Display
 
-NYI
+=head5 method .set-number-of-desktops($number)
+
+Set the number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
+
+Takes one parameter:
+
+=item $ndesktops: the new number of desktops to set.
+
+Returns 0 on success, !0 on failure
+
+
+=head5 method .get-number-of-desktops()
+
+Get the current number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
+
+Takes no parameters:
+
+Returns one integer:
+
+=item $number: the current number of desktops (workspaces).
+
+=head5 method .set-current-desktop($number)
+
+Switch to another desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
+
+Takes one parameter:
+
+=item int $number The desktop number to switch to.
+
+
+=head5 method .get-current-desktop()
+
+Get the current desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
+
+Takes no parmeters:
+
+Returns one integer:
+
+=item int $number The index number of the current desktop (workspace).
+
+
+=head5 method .move-window-to-desktop($window, $number)
+
+Move a window to another desktop. Uses _NET_WM_DESKTOP of the EWMH spec.
+
+Takes two parameters:
+
+=item Window $window:  ID of the window to move
+=item int $desktop: the desktop destination for the window
+
+Returns 0 on success, !0 on failure
+
+=head5 method .get-desktop-for-window($window)
+
+Get the desktop a window is on. Uses _NET_WM_DESKTOP of the EWMH spec.
+
+If your desktop does not support _NET_WM_DESKTOP ruturns Nil.
+
+Takes one parameter:
+
+=item Window $window:  ID of the window to query.
+
+Returns one integer:
+
+=item int $desktop: the desktop where the window is located.
+
+=head5 method .get-desktop-viewport()
+
+Get the position of the current viewport.
+
+This is only relevant if your window manager supports _NET_DESKTOP_VIEWPORT
+
+Takes no parameters:
+
+Returns two values:
+
+=item int $x: the X value of the top left corner of the viewport.
+=item int $y: the Y value of the top left corner of the viewport.
+
+=head5 method .set-desktop-viewport($x, $y)
+
+Set the position of the current viewport.
+
+This is only relevant if your window manager supports _NET_DESKTOP_VIEWPORT
+
+Takes two parameters:
+
+=item int $x: the X value of the top left corner of the viewport.
+=item int $y: the Y value of the top left corner of the viewport.
 
 
 =head1 AUTHOR
@@ -1105,6 +1235,36 @@ class Xdo is export {
         xdo_wait_for_window_active( self.id, $window, $active );
     }
 
+
+    #`[
+    Wait for a window to have a specific map state.
+
+     State possibilities:
+       IsUnmapped - window is not displayed.
+       IsViewable - window is mapped and shown (though may be clipped by windows
+         on top of it)
+       IsUnviewable - window is mapped but a parent window is unmapped.
+
+      param window-id:  the window you want to wait for.
+      param map_state:  the state to wait for.
+     ]
+    method wait-for-window-map-state(Window $window, int32 $state) {
+        sub xdo_wait_for_window_map_state(XDO, Window, int32) returns int32 is native('xdo') { * };
+        xdo_wait_for_window_map_state(self.id, $window, $state);
+    }
+
+    #`[
+    Change window state
+
+      param: $action -  the _NET_WM_STATE action
+    ]
+    method set-window-state(Window $window, ulong $action, str $property) {
+        sub xdo_window_state(XDO, Window, ulong, str ) returns int32 is native('xdo') { * };
+        xdo_window_state(self.id, $window, $action, $property)
+    }
+
+
+
     #`[ # TODO not working under Cinnamon?
     Set the override_redirect value for a window. This generally means
     whether or not a window manager will manage this window.
@@ -1250,6 +1410,105 @@ class Xdo is export {
        sub xdo_get_viewport_dimensions(XDO, uint32 is rw, uint32 is rw, Screen-index) returns int32 is native('xdo') { * };
        xdo_get_viewport_dimensions(self.id, $width, $height, $screen);
        $width, $height, $screen +& 15;
+   }
+
+   #`[
+   Set the number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
+
+     param ndesktops the new number of desktops to set.
+   ]
+   method set-number-of-desktops (long $number) {
+       sub xdo_set_number_of_desktops(XDO, long) returns int32 is native('xdo') { * };
+       xdo_set_number_of_desktops(self.id, $number)
+   }
+
+   #`[
+   Get the current number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
+
+     param ndesktops pointer to long where the current number of desktops is
+   ]
+   method get-number-of-desktops () {
+       my $number := CArray[long].new;
+       $number[0] = -2;
+       sub xdo_get_number_of_desktops(XDO, CArray) returns int32 is native('xdo') { * };
+       xdo_get_number_of_desktops(self.id, $number);
+       $number[0]
+   }
+
+
+   #`[
+   Switch to another desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
+
+      param desktop The desktop number to switch to.
+   ]
+   method set-current-desktop (long $number) {
+       sub xdo_set_current_desktop(XDO, long) returns int32 is native('xdo') { * };
+       xdo_set_current_desktop(self.id, $number)
+   }
+
+
+   #`[
+    Get the current desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
+
+      param desktop pointer to long where the current desktop number is stored.
+   ]
+   method get-current-desktop () {
+       my $number := CArray[long].new;
+       $number[0] = -2;
+       sub xdo_get_current_desktop(XDO, CArray) returns int32 is native('xdo') { * };
+       xdo_get_current_desktop(self.id, $number);
+       $number[0]
+   }
+
+
+   #`[
+   Move a window to another desktop. Uses _NET_WM_DESKTOP of the EWMH spec.
+
+     param wid the window to move
+     param desktop the desktop destination for the window
+   ]
+   method move-window-to-desktop (Window $window, long $number) {
+       sub xdo_set_desktop_for_window(XDO, Window, long) returns int32 is native('xdo') { * };
+       xdo_set_desktop_for_window(self.id, $window, $number)
+   }
+
+   #`[
+   Get the desktop a window is on. Uses _NET_WM_DESKTOP of the EWMH spec.
+
+   If your desktop does not support _NET_WM_DESKTOP, then '*desktop' remains
+   unmodified.
+
+     param wid the window to query
+     param deskto pointer to long where the desktop of the window is stored
+   ]
+   method get-desktop-for-window (Window $window) {
+       my $number := CArray[long].new;
+       $number[0] = -2;
+       sub xdo_get_desktop_for_window(XDO, Window, CArray) returns int32 is native('xdo') { * };
+       xdo_get_desktop_for_window(self.id, $window, $number);
+       $number[0]
+   }
+
+   #`[
+   Get the position of the current viewport.
+
+   This is only relevant if your window manager supports _NET_DESKTOP_VIEWPORT
+   ]
+   method get-desktop-viewport () {
+       my int32 ($x_ret, $y_ret);
+       sub xdo_get_desktop_viewport(XDO, int32, int32) returns int32 is native('xdo') { * };
+       xdo_get_desktop_viewport(self.id, $x_ret, $y_ret);
+       $x_ret, $y_ret
+   }
+
+   #`[
+   Set the position of the current viewport.
+
+   This is only relevant if your window manager supports _NET_DESKTOP_VIEWPORT
+   ]
+   method set-desktop-viewport ($x, $y) {
+       sub xdo_set_desktop_viewport(XDO, int32, int32) returns int32 is native('xdo') { * };
+       xdo_set_desktop_viewport(self.id, $x, $y)
    }
 
 }

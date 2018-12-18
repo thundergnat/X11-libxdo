@@ -78,8 +78,6 @@ There are several broad categories of methods available.
 
   * Desktop
 
-  * Display
-
 Miscellaneous
 -------------
 
@@ -150,7 +148,7 @@ Takes three parameters:
 
   * int $y: the target Y coordinate on the screen in pixels.
 
-  * int $window: ID of the window.
+  * Window $window: ID of the window.
 
 Returns 0 on success !0 on failure.
 
@@ -180,7 +178,7 @@ Returns four integers:
 
   * int $y: the y coordinate of the mouse pointer.
 
-  * int $window: the ID number of the window the mouse pointer is located on.
+  * Window $window: the ID number of the window the mouse pointer is located on.
 
   * int $screen: the index number of the screen the mouse pointer is located on.
 
@@ -214,7 +212,7 @@ Send a mouse press (aka mouse down) for a given button at the current mouse loca
 
 Takes two parameters:
 
-  * int $window: The ID# of the window receiving the event. 0 for the current window.
+  * Window $window: The ID# of the window receiving the event. 0 for the current window.
 
   * int $button: The mouse button. Generally, 1 is left, 2 is middle, 3 is right, 4 is wheel up, 5 is wheel down.
 
@@ -226,7 +224,7 @@ Send a mouse release (aka mouse up) for a given button at the current mouse loca
 
 Takes two parameters:
 
-  * int $window: The ID# of the window receiving the event. 0 for the current window.
+  * Window $window: The ID# of the window receiving the event. 0 for the current window.
 
   * int $button: The mouse button. Generally, 1 is left, 2 is middle, 3 is right, 4 is wheel up, 5 is wheel down.
 
@@ -238,7 +236,7 @@ Send a click for a specific mouse button at the current mouse location.
 
 Takes two parameters:
 
-  * int $window: The ID# of the window receiving the event. 0 for the current window.
+  * Window $window: The ID# of the window receiving the event. 0 for the current window.
 
   * int $button: The mouse button. Generally, 1 is left, 2 is middle, 3 is right, 4 is wheel up, 5 is wheel down.
 
@@ -250,7 +248,7 @@ Send a one or more clicks of a specific mouse button at the current mouse locati
 
 Takes three parameters:
 
-  * int $window: The ID# of the window receiving the event. 0 for the current window.
+  * Window $window: The ID# of the window receiving the event. 0 for the current window.
 
   * int $button: The mouse button. Generally, 1 is left, 2 is middle, 3 is right, 4 is wheel up, 5 is wheel down.
 
@@ -297,7 +295,7 @@ Get a window's location.
 
 Takes two optional parameters:
 
-  * int $window: Optional parameter window ID. If none supplied, uses active window ID.
+  * Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
   * int $screen: Optional parameter screen ID. If none supplied, uses active screen ID.
 
@@ -315,7 +313,7 @@ Get a window's size.
 
 Takes one optional parameter:
 
-  * int $window: Optional parameter window ID. If none supplied, uses active window ID.
+  * Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
 Returns two integers:
 
@@ -329,7 +327,7 @@ Get a windows geometry string.
 
 Takes one optional parameter:
 
-  * int $window: Optional parameter window ID. If none supplied, uses active window ID.
+  * Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
 Returns standard geometry string
 
@@ -343,7 +341,7 @@ Get a window's name, if any.
 
 Takes one optional parameter:
 
-  * int $window: Optional parameter window ID. If none supplied, uses active window ID.
+  * Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
 Returns one string:
 
@@ -355,7 +353,7 @@ Get the PID or the process owning a window. Not all applications support this. I
 
 Takes one parameter:
 
-  * int $window: Window ID.
+  * Window $window: Window ID.
 
 Returns one integer:
 
@@ -367,7 +365,7 @@ Set the window size.
 
 Takes four parameters:
 
-  * int $window: the ID of the window to resize.
+  * Window $window: the ID of the window to resize.
 
   * int $width: the new desired width.
 
@@ -393,7 +391,7 @@ Set the focus on a window.
 
 Takes one parameter:
 
-  * int $window: ID of window to focus on.
+  * Window $window: ID of window to focus on.
 
 Returns 0 on success !0 on failure.
 
@@ -405,7 +403,7 @@ Takes no parameters:
 
 Returns one parameter:
 
-  * int $window: ID of window currently having focus.
+  * Window $window: ID of window currently having focus.
 
 ##### method .activate-window( $window )
 
@@ -417,7 +415,7 @@ Activate a window. This is generally a better choice than .focus_window for a va
 
 Takes one parameter:
 
-  * int $window: Window ID.
+  * Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -427,7 +425,7 @@ Raise a window to the top of the window stack. This is also sometimes termed as 
 
 Takes one parameter:
 
-  * int $window: Window ID.
+  * Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -437,7 +435,7 @@ Minimize a window.
 
 Takes one parameter:
 
-  * int $window: Window ID.
+  * Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -447,7 +445,7 @@ Map a window. This mostly means to make the window visible if it is not currentl
 
 Takes one parameter:
 
-  * int $window: Window ID.
+  * Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -457,7 +455,7 @@ Unmap a window. This means to make the window invisible and possibly remove it f
 
 Takes one parameter:
 
-  * int $window: Window ID.
+  * Window $window: Window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -469,7 +467,7 @@ The top left corner of the window will be moved to the x,y coordinate.
 
 Takes three parameters:
 
-  * int $window: Window ID of the window to move.
+  * Window $window: Window ID of the window to move.
 
   * int $x : the X coordinate to move to.
 
@@ -483,7 +481,7 @@ Wait for a window to be active or not active. Requires your window manager to su
 
 Takes one parameter:
 
-  * int $window: Window ID. If none supplied, uses active window ID.
+  * Window $window: Window ID. If none supplied, uses active window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -495,7 +493,7 @@ Close a window without trying to kill the client.
 
 Takes one parameter:
 
-  * int $window: Optional parameter window ID. If none supplied, uses active window ID.
+  * Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -507,7 +505,7 @@ Kill a window and the client owning it.
 
 Takes one parameter:
 
-  * int $window: Optional parameter window ID. If none supplied, uses active window ID.
+  * Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
 Returns 0 on success !0 on failure.
 
@@ -519,11 +517,57 @@ Set the override_redirect value for a window. This generally means whether or no
 
 Takes two parameters:
 
-  * int $window: Optional parameter window ID. If none supplied, uses active window ID.
+  * Window $window: Optional parameter window ID. If none supplied, uses active window ID.
 
   * int $value: If you set it to 1, the window manager will usually not draw borders on the window, etc. If you set it to 0, the window manager will see it like a normal application window.
 
 Returns 0 on success !0 on failure.
+
+##### method .wait-for-window-map-state( $window, $state )
+
+Wait for a window to have a specific map state.
+
+State possibilities:
+
+  * 0 IsUnmapped - window is not displayed.
+
+  * 1 IsViewable - window is mapped and shown (though may be clipped by windows on top of it)
+
+  * 2 IsUnviewable - window is mapped but a parent window is unmapped.
+
+Takes two parameters:
+
+  * Window $window: Window ID, the window you want to wait for.
+
+  * int map_state: the state to wait for.
+
+##### method .set-window-state( $window, $action, $property)
+
+Change window state
+
+Takes three parameters:
+
+  * Window $window: Window ID, the window you want to act on.
+
+  * ulong $action: the _NET_WM_STATE action
+
+  * str $property: the property to change
+
+    ACTIONS:
+    _NET_WM_STATE_REMOVE: 0 -  remove/unset property
+    _NET_WM_STATE_ADD:    1 -  add/set property
+    _NET_WM_STATE_TOGGLE: 2 -  toggle property
+
+    SOME POSSIBLE PROPERTIES:
+    _NET_WM_STATE_MAXIMIZED_VERT
+    _NET_WM_STATE_MAXIMIZED_HORZ
+    _NET_WM_STATE_SHADED
+    _NET_WM_STATE_HIDDEN
+    _NET_WM_STATE_FULLSCREEN
+    _NET_WM_STATE_ABOVE
+    _NET_WM_STATE_BELOW
+
+Retuns 0 on sucess, !0 on failure
 
 Keystrokes
 ----------
@@ -617,10 +661,95 @@ Returns three integers:
 
   * $screen index of screen for which the dimensions are reported.
 
-Display
--------
+##### method .set-number-of-desktops($number)
 
-NYI
+Set the number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
+
+Takes one parameter:
+
+  * $ndesktops: the new number of desktops to set.
+
+Returns 0 on success, !0 on failure
+
+##### method .get-number-of-desktops()
+
+Get the current number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
+
+Takes no parameters:
+
+Returns one integer:
+
+  * $number: the current number of desktops (workspaces).
+
+##### method .set-current-desktop($number)
+
+Switch to another desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
+
+Takes one parameter:
+
+  * int $number The desktop number to switch to.
+
+##### method .get-current-desktop()
+
+Get the current desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
+
+Takes no parmeters:
+
+Returns one integer:
+
+  * int $number The index number of the current desktop (workspace).
+
+##### method .move-window-to-desktop($window, $number)
+
+Move a window to another desktop. Uses _NET_WM_DESKTOP of the EWMH spec.
+
+Takes two parameters:
+
+  * Window $window: ID of the window to move
+
+  * int $desktop: the desktop destination for the window
+
+Returns 0 on success, !0 on failure
+
+##### method .get-desktop-for-window($window)
+
+Get the desktop a window is on. Uses _NET_WM_DESKTOP of the EWMH spec.
+
+If your desktop does not support _NET_WM_DESKTOP ruturns Nil.
+
+Takes one parameter:
+
+  * Window $window: ID of the window to query.
+
+Returns one integer:
+
+  * int $desktop: the desktop where the window is located.
+
+##### method .get-desktop-viewport()
+
+Get the position of the current viewport.
+
+This is only relevant if your window manager supports _NET_DESKTOP_VIEWPORT
+
+Takes no parameters:
+
+Returns two values:
+
+  * int $x: the X value of the top left corner of the viewport.
+
+  * int $y: the Y value of the top left corner of the viewport.
+
+##### method .set-desktop-viewport($x, $y)
+
+Set the position of the current viewport.
+
+This is only relevant if your window manager supports _NET_DESKTOP_VIEWPORT
+
+Takes two parameters:
+
+  * int $x: the X value of the top left corner of the viewport.
+
+  * int $y: the Y value of the top left corner of the viewport.
 
 AUTHOR
 ======
