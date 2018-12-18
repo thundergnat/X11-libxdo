@@ -13,11 +13,11 @@ Version: 0.0.2
 Perl 6 bindings to the L<libxdo X11 automation library|https://github.com/jordansissel/xdotool>.
 
 Note: This is a WORK IN PROGRESS. The tests are under construction and many of
-them probably won't work on your computer. Several functions are not yet
-implemented, but a large core group is.
+them may not work on your computer. Several functions are not yet implemented,
+but a large core group is.
 
 Many of the test files do not actally run tests that can be checked for
-correctness. (Many of the object move and resize tests for example.)
+correctness. (Many of the object move & resize tests for example.)
 Rather, they attempt to perform an action and fail/pass based on if the attempt
 does or doesn't produce an error.
 
@@ -77,13 +77,13 @@ Source Code on GitHub |  https://github.com/jordansissel/xdotool/releases
 =end table
 
 
-Many (most?) of the xdo methods take a window ID # in their parameters.
-This is an integer ID# and MUST be passed as an Int. In general, to act on the
+Many (most?) of the xdo methods take a window ID # in their parameters. This is
+an integer ID# and MUST be passed as an unsigned Int. In general, to act on the
 currently active window, set the window ID to 0 or just leave blank.
 
 Note that many of the methods will require a small delay for them to finish
 before moving on to the next, especially when performing several actions in a
-row. Either a do short sleep or a .activate-window($window-ID) to give the
+row. Either do a short sleep or a .activate-window($window-ID) to give the
 action time to complete before moving on to the next action.
 
 There are several broad categories of methods available.
@@ -168,7 +168,7 @@ Takes two parameters:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .move-mouse-relative-to-window( $x, $y, $screen )
+=head5 method .move-mouse-relative-to-window( $x, $y, $window )
 
 Move the mouse to a specific location relative to the top-left corner
 of a window.
@@ -678,7 +678,7 @@ Licensed under The Artistic 2.0; see LICENSE.
 
 use NativeCall;
 
-constant XDO    := Pointer;
+constant XDO          := Pointer;
 constant Screen-index := int8;
 
 class Xdo is export {

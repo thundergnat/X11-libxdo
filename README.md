@@ -3,18 +3,20 @@ NAME
 
 X11::Xdo
 
+Version: 0.0.2
+
 Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
 
-Note: This is a WORK IN PROGRESS. The tests are under construction and many of them probably won't work on your computer. Several functions are not yet implemented, but a large core group is.
+Note: This is a WORK IN PROGRESS. The tests are under construction and many of them may not work on your computer. Several functions are not yet implemented, but a large core group is.
 
-Many of the test files do not actally run tests that can be checked for correctness. (Many of the object move and resize test for example.) Rather, they attempt to perform and action and fail/pass based on if the attempt does or doesn't produce an error.
+Many of the test files do not actally run tests that can be checked for correctness. (Many of the object move & resize tests for example.) Rather, they attempt to perform an action and fail/pass based on if the attempt does or doesn't produce an error.
 
 Not all libxdo functions are supported by every window manager. In general, mouse info & move and window info, move, & resize routines seem to be well supported, others... not so much.
 
 SYNOPSIS
 ========
 
-    use X11::Xdo;
+    use X11::libxdo;
 
     my $xdo = Xdo.new;
 
@@ -49,7 +51,7 @@ DESCRIPTION
 
 Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
 
-Requires that libxdo and (for some functionality) xdtool command line utility is installed and accessible.
+Requires that libxdo and (for some functionality) the xdtool command line utility is installed and accessible.
 
 <table class="pod-table">
 <thead><tr>
@@ -60,9 +62,9 @@ Requires that libxdo and (for some functionality) xdtool command line utility is
 </tbody>
 </table>
 
-Many (most?) of the xdo methods take a window ID # in their parameters. This is an integer ID# and MUST be passed as an Int. In general, to act on the currently active window, set the window ID to 0 or just leave blank.
+Many (most?) of the xdo methods take a window ID # in their parameters. This is an integer ID# and MUST be passed as an unsigned Int. In general, to act on the currently active window, set the window ID to 0 or just leave blank.
 
-Note that many of the methods will require a small delay for them to finish before moving on to the next, especially when performing several actions in a row. Either a short sleep or do a .activate-window($window-ID) before moving on to the next action.
+Note that many of the methods will require a small delay for them to finish before moving on to the next, especially when performing several actions in a row. Either do a short sleep or a .activate-window($window-ID) to give the action time to complete before moving on to the next action.
 
 There are several broad categories of methods available.
 
@@ -107,7 +109,7 @@ Takes (up to) three parameters:
 
   * Bool $visible: named (optional) True (default) to only search visible windows. False for all windows.
 
-  * into $depth: named (optional) Set to 0 (default to search all levels, 1 to only search toplevel windows, 2 to include their direct children, etc.
+  * int $depth: named (optional) Set to 0 (default to search all levels, 1 to only search toplevel windows, 2 to include their direct children, etc.
 
 Mouse
 -----
@@ -138,7 +140,7 @@ Takes two parameters:
 
 Returns 0 on success !0 on failure.
 
-##### method .move-mouse-relative-to-window( $x, $y, $screen )
+##### method .move-mouse-relative-to-window( $x, $y, $window )
 
 Move the mouse to a specific location relative to the top-left corner of a window.
 
@@ -244,7 +246,7 @@ Returns nothing.
 
 ##### method .mouse-button-multiple( $window, $button, $repeat = 2, $delay? )
 
-Send a one or more clicks for a specific mouse button at the current mouse location.
+Send a one or more clicks of a specific mouse button at the current mouse location.
 
 Takes three parameters:
 
@@ -311,7 +313,7 @@ Returns three integers:
 
 Get a window's size.
 
-Takes one optional parameters:
+Takes one optional parameter:
 
   * int $window: Optional parameter window ID. If none supplied, uses active window ID.
 
@@ -349,7 +351,7 @@ Returns one string:
 
 ##### method .get-window-pid( $window )
 
-Get the PID owning a window. Not all applications support this. It looks at the _NET_WM_PID property of the window.
+Get the PID or the process owning a window. Not all applications support this. It looks at the _NET_WM_PID property of the window.
 
 Takes one parameter:
 
@@ -374,6 +376,8 @@ Takes four parameters:
   * int $flags: Optional, if 0, use pixels for units. Otherwise the units will be relative to the window size hints.
 
 HINTS:
+
+  * 0 size window in pixels
 
   * 1 size X dimension relative to character block width
 
@@ -405,7 +409,7 @@ Returns one parameter:
 
 ##### method .activate-window( $window )
 
-Activate a window. This is generally a better choice than xdo_focus_window for a variety of reasons, but it requires window manager support:
+Activate a window. This is generally a better choice than .focus_window for a variety of reasons, but it requires window manager support.
 
   * If the window is on another desktop, that desktop is switched to.
 
