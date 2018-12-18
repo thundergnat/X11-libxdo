@@ -2,8 +2,6 @@ use Test;
 use X11::libxdo;
 my $xdo = Xdo.new;
 
-my $id = $xdo.get-active-window;
-
 my ($dw, $dh) = $xdo.get-desktop-dimensions( 0 );
 
 sleep .25;
@@ -15,7 +13,7 @@ for ^$dw -> $mx {
     my $name = (try $xdo.get-window-name($window-id) if $window-id)
        // 'No name set';
 
-    my $line = "Mouse location: x=$x : y=$y\nWindow under mouse.\nID: " ~
+    my $line = "Mouse location: x=$x : y=$y\nWindow under mouse:\nWindow ID: " ~
        $window-id ~ "\nWindow name: " ~ $name ~ "\nScreen #: $screen";
 
     print "\e[H\e[J", $line;

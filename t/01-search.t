@@ -29,7 +29,9 @@ This is a paragraph of text. It is kind of boring, but I needed something in
 Sorry, can not automatically close this window (or tab, as the case may be)
  safely.
 {"\r\n\r\n"}
-Please close it manually when testing is done.
+Please close it manually when testing is done, but only AFTER testing is done.
+ Probably should avoid touching the mouse and keyboard completely until then if
+ possible. {"\r\n\r\n"}Thanks.{"\r\n\r\n"}Meanwhile; enjoy the show 🙂
 END
 
 if @w > 0 {
