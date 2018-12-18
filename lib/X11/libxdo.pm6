@@ -8,7 +8,7 @@ use X11::Xlib::Raw;
 
 X11::Xdo
 
-Version: 0.0.2
+Version: 0.0.3
 
 Perl 6 bindings to the L<libxdo X11 automation library|https://github.com/jordansissel/xdotool>.
 
@@ -96,7 +96,7 @@ There are several broad categories of methods available.
 
 =head2 Miscellaneous
 
-=head5 method .version()
+=head4 method .version()
 
 Get the library version.
 
@@ -104,7 +104,7 @@ Takes no parameters.
 
 Returns the version string of the current libxdo library.
 
-=head5 method .get_symbol_map()
+=head4 method .get_symbol_map()
 
 Get modifier symbol pairs.
 
@@ -112,7 +112,7 @@ Takes no parameters.
 
 Returns an array of modifier symbol pairs.
 
-=head5 method .search ($query, :$visible = True, :$depth = 0)
+=head4 method .search ($query, :$visible = True, :$depth = 0)
 
 Work in progress. Limited functionality at this point.
 
@@ -144,7 +144,7 @@ int xdo_search_windows(const xdo_t *xdo, const xdo_search_t *search,
 =head2 Mouse
 
 
-=head5 method .move-mouse( $x, $y, $screen )
+=head4 method .move-mouse( $x, $y, $screen )
 
 Move the mouse to a specific location.
 
@@ -156,7 +156,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .move-mouse-relative( $delta-x, $delta-y )
+=head4 method .move-mouse-relative( $delta-x, $delta-y )
 
 Move the mouse relative to it's current position.
 
@@ -167,7 +167,7 @@ Takes two parameters:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .move-mouse-relative-to-window( $x, $y, $window )
+=head4 method .move-mouse-relative-to-window( $x, $y, $window )
 
 Move the mouse to a specific location relative to the top-left corner
 of a window.
@@ -180,7 +180,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .get-mouse-location()
+=head4 method .get-mouse-location()
 
 Get the current mouse location (coordinates and screen ID number).
 
@@ -192,7 +192,7 @@ Returns three integers:
 =item int $y:       the y coordinate of the mouse pointer.
 =item int $screen:  the index number of the screen the mouse pointer is located on.
 
-=head5 method .get-mouse-info()
+=head4 method .get-mouse-info()
 
 Get all mouse location-related data.
 
@@ -205,7 +205,7 @@ Returns four integers:
 =item Window $window:  the ID number of the window the mouse pointer is located on.
 =item int $screen:  the index number of the screen the mouse pointer is located on.
 
-=head5 method .wait-for-mouse-to-move-from( $origin-x, $origin-y )
+=head4 method .wait-for-mouse-to-move-from( $origin-x, $origin-y )
 
 Wait for the mouse to move from a location. This function will block
 until the condition has been satisfied.
@@ -217,7 +217,7 @@ Takes two integer parameters:
 
 Returns nothing.
 
-=head5 method .wait-for-mouse-to-move-to( $dest-x, $dest-y )
+=head4 method .wait-for-mouse-to-move-to( $dest-x, $dest-y )
 
 Wait for the mouse to move to a location. This function will block
 until the condition has been satisfied.
@@ -229,7 +229,7 @@ Takes two integer parameters:
 
 Returns nothing.
 
-=head5 method .mouse-button-down( $window, $button )
+=head4 method .mouse-button-down( $window, $button )
 
 Send a mouse press (aka mouse down) for a given button at the current mouse
 location.
@@ -241,7 +241,7 @@ Takes two parameters:
 
 Returns nothing.
 
-=head5 method .mouse-button-up( $window, $button )
+=head4 method .mouse-button-up( $window, $button )
 
 Send a mouse release (aka mouse up) for a given button at the current mouse
 location.
@@ -253,7 +253,7 @@ Takes two parameters:
 
 Returns nothing.
 
-=head5 method .mouse-button-click( $window, $button )
+=head4 method .mouse-button-click( $window, $button )
 
 Send a click for a specific mouse button at the current mouse location.
 
@@ -264,7 +264,7 @@ Takes two parameters:
 
 Returns nothing.
 
-=head5 method .mouse-button-multiple( $window, $button, $repeat = 2, $delay? )
+=head4 method .mouse-button-multiple( $window, $button, $repeat = 2, $delay? )
 
 Send a one or more clicks of a specific mouse button at the current mouse
 location.
@@ -278,7 +278,7 @@ Takes three parameters:
 
 Returns nothing.
 
-=head5 method .get-window-under-mouse()
+=head4 method .get-window-under-mouse()
 
 Get the window the mouse is currently over
 
@@ -289,7 +289,7 @@ Returns the ID of the topmost window under the mouse.
 
 =head2 Window
 
-=head5 method .get-active-window()
+=head4 method .get-active-window()
 
 Get the currently-active window. Requires your window manager to support this.
 
@@ -299,7 +299,7 @@ Returns one integer:
 
 =item $screen:  Window ID of active window.
 
-=head5 method .select-window-with-mouse()
+=head4 method .select-window-with-mouse()
 
 Get a window ID by clicking on it. This function blocks until a selection
  is made.
@@ -310,7 +310,7 @@ Returns one integer:
 
 =item $screen:  Window ID of active window.
 
-=head5 method .get-window-location( $window?, $scrn? )
+=head4 method .get-window-location( $window?, $scrn? )
 
 Get a window's location.
 
@@ -325,7 +325,7 @@ Returns three integers:
 =item $y:       y coordinate of top left corner of window.
 =item $screen   index of screen the window is located on.
 
-=head5 method .get-window-size( $window? )
+=head4 method .get-window-size( $window? )
 
 Get a window's size.
 
@@ -338,7 +338,7 @@ Returns two integers:
 =item int $width     the width of the queried window in pixels.
 =item int $height    the height of the queried window in pixels.
 
-=head5 method .get-window-geometry( $window? )
+=head4 method .get-window-geometry( $window? )
 
 Get a windows geometry string.
 
@@ -353,7 +353,7 @@ Returns standard geometry string
 400x200+250+450  means a 400 pixel wide by 200 pixel high window with the top
 left corner at 250 x position 450 y position.
 
-=head5 method .get-window-name( $window? )
+=head4 method .get-window-name( $window? )
 
 Get a window's name, if any.
 
@@ -365,7 +365,7 @@ Returns one string:
 
 =item Str $name   Name of the queried window.
 
-=head5 method .get-window-pid( $window )
+=head4 method .get-window-pid( $window )
 
 Get the PID or the process owning a window. Not all applications support this.
 It looks at the _NET_WM_PID property of the window.
@@ -378,7 +378,7 @@ Returns one integer:
 
 =item int $pid   process id, or 0 if no pid found.
 
-=head5 method .set-window-size( $window, $width, $height, $flags? = 0 )
+=head4 method .set-window-size( $window, $width, $height, $flags? = 0 )
 
 Set the window size.
 
@@ -402,7 +402,7 @@ HINTS:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .focus-window( $window )
+=head4 method .focus-window( $window )
 
 Set the focus on a window.
 
@@ -412,7 +412,7 @@ Takes one  parameter:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .get-focused-window( )
+=head4 method .get-focused-window( )
 
 Get the ID of the window currently having focus.
 
@@ -423,7 +423,7 @@ Returns one parameter:
 =item Window $window:  ID of window currently having focus.
 
 
-=head5 method .activate-window( $window )
+=head4 method .activate-window( $window )
 
 Activate a window. This is generally a better choice than .focus_window
 for a variety of reasons, but it requires window manager support.
@@ -437,7 +437,7 @@ Takes one  parameter:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .raise-window( $window )
+=head4 method .raise-window( $window )
 
 Raise a window to the top of the window stack. This is also sometimes
 termed as bringing the window forward.
@@ -448,7 +448,7 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .minimize( $window )
+=head4 method .minimize( $window )
 
 Minimize a window.
 
@@ -458,7 +458,7 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .map-window( $window )
+=head4 method .map-window( $window )
 
 Map a window. This mostly means to make the window visible if it is
 not currently mapped.
@@ -469,7 +469,7 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .unmap-window( $window )
+=head4 method .unmap-window( $window )
 
 Unmap a window. This means to make the window invisible and possibly remove it
 from the task bar on some WMs.
@@ -480,7 +480,7 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .move-window( $window )
+=head4 method .move-window( $window )
 
 Move a window to a specific location.
 
@@ -494,7 +494,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .wait_for_window_active( $window )
+=head4 method .wait_for_window_active( $window )
 
 Wait for a window to be active or not active.
 Requires your window manager to support this.
@@ -506,7 +506,7 @@ Takes one parameter:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .close-window( $window )
+=head4 method .close-window( $window )
 
 TODO not working under Cinnamon?
 
@@ -518,7 +518,7 @@ Takes one  parameter:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .kill-window( $window )
+=head4 method .kill-window( $window )
 
 TODO not working under Cinnamon?
 
@@ -530,7 +530,7 @@ Takes one  parameter:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .override-redirect( $window, $value )
+=head4 method .override-redirect( $window, $value )
 
 TODO not working under Cinnamon?
 
@@ -544,7 +544,7 @@ Takes two parameters:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .wait-for-window-map-state( $window, $state )
+=head4 method .wait-for-window-map-state( $window, $state )
 
 Wait for a window to have a specific map state.
 
@@ -560,7 +560,7 @@ Takes two parameters:
 =item int map_state:  the state to wait for.
 
 
-=head5 method .set-window-state( $window, $action, $property)
+=head4 method .set-window-state( $window, $action, $property)
 
 Change window state
 
@@ -570,6 +570,7 @@ Takes three parameters:
 =item ulong  $action: the _NET_WM_STATE action
 =item str  $property: the property to change
 
+=begin code
     ACTIONS:
     _NET_WM_STATE_REMOVE: 0 -  remove/unset property
     _NET_WM_STATE_ADD:    1 -  add/set property
@@ -583,6 +584,7 @@ Takes three parameters:
     _NET_WM_STATE_FULLSCREEN
     _NET_WM_STATE_ABOVE
     _NET_WM_STATE_BELOW
+=end code
 
 Retuns 0 on sucess, !0 on failure
 
@@ -590,7 +592,7 @@ Retuns 0 on sucess, !0 on failure
 
 =head2 Keystrokes
 
-=head5 method .type( $window, $string, $delay? )
+=head4 method .type( $window, $string, $delay? )
 
 Type a string to the specified window.
 
@@ -610,7 +612,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .send-sequence( $window, $string, $delay? )
+=head4 method .send-sequence( $window, $string, $delay? )
 
 This allows you to send keysequences by symbol name. Any combination
 of X11 KeySym names separated by '+' are valid. Single KeySym names
@@ -626,7 +628,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .send-key-press( $window, $string, $delay? )
+=head4 method .send-key-press( $window, $string, $delay? )
 
 Send key press (down) events for the given key sequence.
 
@@ -640,7 +642,7 @@ Takes three parameters:
 
 Returns 0 on success !0 on failure.
 
-=head5 method .send-key-release( $window, $string, $delay? )
+=head4 method .send-key-release( $window, $string, $delay? )
 
 Send key release (up) events for the given key sequence.
 
@@ -677,9 +679,7 @@ method send-keysequence-list($window = 0, Carray @keys, int $pressed, int, $modi
 
 =head2 Desktop
 
-Mostly NYI
-
-=head5 method .get-desktop-dimensions( $screen? )
+=head4 method .get-desktop-dimensions( $screen? )
 
 Query the viewport (your display) dimensions
 
@@ -698,7 +698,7 @@ Returns three integers:
 =item $screen   index of screen for which the dimensions are reported.
 
 
-=head5 method .set-number-of-desktops($number)
+=head4 method .set-number-of-desktops($number)
 
 Set the number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
 
@@ -709,7 +709,7 @@ Takes one parameter:
 Returns 0 on success, !0 on failure
 
 
-=head5 method .get-number-of-desktops()
+=head4 method .get-number-of-desktops()
 
 Get the current number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
 
@@ -719,7 +719,7 @@ Returns one integer:
 
 =item $number: the current number of desktops (workspaces).
 
-=head5 method .set-current-desktop($number)
+=head4 method .set-current-desktop($number)
 
 Switch to another desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
 
@@ -728,7 +728,7 @@ Takes one parameter:
 =item int $number The desktop number to switch to.
 
 
-=head5 method .get-current-desktop()
+=head4 method .get-current-desktop()
 
 Get the current desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
 
@@ -739,7 +739,7 @@ Returns one integer:
 =item int $number The index number of the current desktop (workspace).
 
 
-=head5 method .move-window-to-desktop($window, $number)
+=head4 method .move-window-to-desktop($window, $number)
 
 Move a window to another desktop. Uses _NET_WM_DESKTOP of the EWMH spec.
 
@@ -750,7 +750,7 @@ Takes two parameters:
 
 Returns 0 on success, !0 on failure
 
-=head5 method .get-desktop-for-window($window)
+=head4 method .get-desktop-for-window($window)
 
 Get the desktop a window is on. Uses _NET_WM_DESKTOP of the EWMH spec.
 
@@ -764,7 +764,7 @@ Returns one integer:
 
 =item int $desktop: the desktop where the window is located.
 
-=head5 method .get-desktop-viewport()
+=head4 method .get-desktop-viewport()
 
 Get the position of the current viewport.
 
@@ -777,7 +777,7 @@ Returns two values:
 =item int $x: the X value of the top left corner of the viewport.
 =item int $y: the Y value of the top left corner of the viewport.
 
-=head5 method .set-desktop-viewport($x, $y)
+=head4 method .set-desktop-viewport($x, $y)
 
 Set the position of the current viewport.
 
