@@ -1,5 +1,5 @@
 use Test;
-use X11::Xdo;
+use X11::libxdo;
 my $xdo = Xdo.new;
 
 my $id = $xdo.get-active-window;
