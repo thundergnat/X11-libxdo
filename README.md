@@ -3,7 +3,7 @@ NAME
 
 X11::Xdo
 
-Version: 0.0.3
+Version: 0.1.0
 
 Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
 
@@ -51,14 +51,14 @@ DESCRIPTION
 
 Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
 
-Requires that libxdo and (for some functionality) the xdtool command line utility is installed and accessible.
+Requires that libxdo-dev library is installed and accessible.
 
 <table class="pod-table">
 <thead><tr>
 <th>Platform</th> <th>Install Method</th>
 </tr></thead>
 <tbody>
-<tr> <td>Debian and Ubuntu</td> <td>[sudo] apt-get install libxdo-dev xdotool</td> </tr> <tr> <td>FreeBSD</td> <td>[sudo] pkg install libxdo-dev xdotool</td> </tr> <tr> <td>Fedora</td> <td>[sudo] dnf install libxdo-dev xdotool</td> </tr> <tr> <td>OSX</td> <td>[sudo] brew install libxdo-dev xdotool</td> </tr> <tr> <td>OpenSUSE</td> <td>[sudo] zypper install libxdo-dev xdotool</td> </tr> <tr> <td>Source Code on GitHub</td> <td>https://github.com/jordansissel/xdotool/releases</td> </tr>
+<tr> <td>Debian and Ubuntu</td> <td>[sudo] apt-get install libxdo-dev</td> </tr> <tr> <td>FreeBSD</td> <td>[sudo] pkg install libxdo-dev</td> </tr> <tr> <td>Fedora</td> <td>[sudo] dnf install libxdo-dev</td> </tr> <tr> <td>OSX</td> <td>[sudo] brew install libxdo-dev</td> </tr> <tr> <td>OpenSUSE</td> <td>[sudo] zypper install libxdo-dev</td> </tr> <tr> <td>Source Code on GitHub</td> <td>https://github.com/jordansissel/xdotool/releases</td> </tr>
 </tbody>
 </table>
 
@@ -101,17 +101,33 @@ Returns an array of modifier symbol pairs.
 
 --
 
-    .search ($query, :$visible = True, :$depth = 0)
+    .search(%query)
 
-Work in progress. Limited functionality at this point.
+Reimplementation of the libxdo search function to give greater flexibility under Perl 6.
 
-Takes (up to) three parameters:
+May seach for a name, class, ID or pid or any combination, against a string / regex.
 
-  * Str $query: positional - String to search for in window name, class or classname
+    .search( :name(), :class(), :ID(), :pid() )
 
-  * Bool $visible: named (optional) True (default) to only search visible windows. False for all windows.
+Search for an open window where the title contains the exact string 'libxdo':
 
-  * int $depth: named (optional) Set to 0 (default to search all levels, 1 to only search toplevel windows, 2 to include their direct children, etc.
+    .search( :name('libxdo') )
+
+Search for an open window where the title contains 'Perl' case insensitvely:
+
+    .search( :name(rx:i['perl']) )
+
+Returns a hash { :name(), :class(), :ID(), :pid() } pairs of the first match found for one of the search parameters.
+
+if you need more granularity or control over the search, use get-windows to get a hash of all of the visible windows and search through them manually.
+
+--
+
+    .get-windows()
+
+Takes no parameters.
+
+Returns a hoh of all of the visible windows keyed on the ID number with value of a hash of { :name(), :class(), :ID(), :pid() } pairs.
 
 Mouse
 -----
