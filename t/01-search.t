@@ -14,7 +14,7 @@ sleep 1.5;
 my $match = 'Test Page';
 
 say "Window IDs matching string $match:";
-say my @w = $xdo.search($match);
+say my @w = $xdo.search(:name($match))<ID>;
 
 sleep .25;
 
@@ -30,8 +30,13 @@ Sorry, can not automatically close this window (or tab, as the case may be)
  safely.
 {"\r\n\r\n"}
 Please close it manually when testing is done, but only AFTER testing is done.
- Probably should avoid touching the mouse and keyboard completely until then if
- possible. {"\r\n\r\n"}Thanks.{"\r\n\r\n"}Meanwhile; enjoy the show 🙂
+{"\r\n\r\n"}
+Probably should avoid touching the mouse and keyboard completely until then if possible.
+{"\r\n\r\n"}
+Thanks.
+{"\r\n\r\n"}
+Meanwhile; enjoy the show 🙂
+{"\r\n\r\n"}
 END
 
 if @w > 0 {
@@ -39,14 +44,10 @@ if @w > 0 {
     say "Window name: ", $xdo.get-window-name( $w );
     $xdo.send-sequence($w, 'Tab');
     $xdo.type($w, "Fast Text:\r\n\r\n" ~ ("Hello World! " x 6), 1000);
-    $xdo.type($w, $para, 100000);
+    $xdo.type($w, $para, 80000);
 }
 
 sleep 2;
-
-$xdo.activate-window($active);
-$xdo.raise-window($active);
-sleep .5;
 
 CATCH { default { note $_; fail } }
 

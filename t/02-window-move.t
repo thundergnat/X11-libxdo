@@ -2,7 +2,7 @@ use Test;
 use X11::libxdo;
 my $xdo = Xdo.new;
 
-my $id = $xdo.get-active-window;
+my $id = $xdo.get-active-window();
 
 my ($w,  $h ) = $xdo.get-window-size( $id );
 my ($wx, $wy) = $xdo.get-window-location( $id );
