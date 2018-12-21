@@ -14,7 +14,7 @@ sleep 1.5;
 my $match = 'Test Page';
 
 say "Window IDs matching string $match:";
-say my @w = $xdo.search(:name($match))<ID>;
+say my $w = $xdo.search(:name($match))<ID>;
 
 sleep .25;
 
@@ -35,16 +35,18 @@ Probably should avoid touching the mouse and keyboard completely until then if p
 {"\r\n\r\n"}
 Thanks.
 {"\r\n\r\n"}
-Meanwhile; enjoy the show 🙂
+Meanwhile; enjoy the show 🙂. Note: if nothing happens for more than 5 seconds
+ or so, you may need to cancel the install, open a web browser window, and try
+ the install again. IPC is a little flaky sometimes.
 {"\r\n\r\n"}
 END
 
-if @w > 0 {
-    my $w = @w[0];
+if $w {
     say "Window name: ", $xdo.get-window-name( $w );
     $xdo.send-sequence($w, 'Tab');
     $xdo.type($w, "Fast Text:\r\n\r\n" ~ ("Hello World! " x 6), 1000);
     $xdo.type($w, $para, 80000);
+    $xdo.activate-window($w);
 }
 
 sleep 2;
