@@ -1,5 +1,6 @@
-unit module X11::libxdo:ver<0.0.3>:auth<github:thundergnat>;
+unit module X11::libxdo:ver<0.1.0>:auth<github:thundergnat>;
 
+use NativeCall;
 use X11::Xlib::Raw;
 
 =begin pod
@@ -8,7 +9,7 @@ use X11::Xlib::Raw;
 
 X11::Xdo
 
-Version: 0.0.3
+Version: 0.1.0
 
 Perl 6 bindings to the L<libxdo X11 automation library|https://github.com/jordansissel/xdotool>.
 
@@ -62,17 +63,16 @@ supported, others... not so much.
 
 Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
 
-Requires that libxdo and (for some functionality) the xdtool command line
-utility is installed and accessible.
+Requires that libxdo-dev library is installed and accessible.
 
 =begin table
 Platform 	          |  Install Method
 ======================================================
-Debian and Ubuntu     |  [sudo] apt-get install libxdo-dev xdotool
-FreeBSD               |  [sudo] pkg install libxdo-dev xdotool
-Fedora                |  [sudo] dnf install libxdo-dev xdotool
-OSX                   |  [sudo] brew install libxdo-dev xdotool
-OpenSUSE              |  [sudo] zypper install libxdo-dev xdotool
+Debian and Ubuntu     |  [sudo] apt-get install libxdo-dev
+FreeBSD               |  [sudo] pkg install libxdo-dev
+Fedora                |  [sudo] dnf install libxdo-dev
+OSX                   |  [sudo] brew install libxdo-dev
+OpenSUSE              |  [sudo] zypper install libxdo-dev
 Source Code on GitHub |  https://github.com/jordansissel/xdotool/releases
 =end table
 
@@ -119,35 +119,40 @@ Returns an array of modifier symbol pairs.
 
 --
 =begin code
-.search ($query, :$visible = True, :$depth = 0)
+.search(%query)
 =end code
 
-Work in progress. Limited functionality at this point.
+Reimplementation of the libxdo search function to give greater flexibility under
+Perl 6.
 
-Takes (up to) three parameters:
+May seach for a name, class, ID or pid or any combination, against a string / regex.
 
-=item Str  $query: positional - String to search for in window name, class or classname
-=item Bool $visible: named (optional) True (default) to only search visible windows. False for all windows.
-=item int  $depth: named (optional) Set to 0 (default to search all levels, 1 to only search toplevel windows, 2 to include their direct children, etc.
+    .search( :name(), :class(), :ID(), :pid() )
 
-=end pod
+Search for an open window where the title contains the exact string 'libxdo':
 
-#`[ SEARCH
-TODO - need to figure out the parameter passing. Probably the most complicated
-routine to bind to.
+     .search( :name('libxdo') )
 
-Search for windows.
+Search for an open window where the title contains 'Perl' case insensitvely:
 
-search: the search query.
-* @param windowlist_ret the list of matching windows to return
-* @param nwindows_ret the number of windows (length of windowlist_ret)
-* @see xdo_search_t
-*/
-int xdo_search_windows(const xdo_t *xdo, const xdo_search_t *search,
-                    Window **windowlist_ret, unsigned int *nwindows_ret);
-]
+     .search( :name(rx:i['perl']) )
 
-=begin pod
+Returns a hash { :name(), :class(), :ID(), :pid() } pairs of the first match
+found for one of the search parameters.
+
+if you need more granularity or control over the search, use get-windows to get
+a hash of all of the visible windows and search through them manually.
+
+--
+=begin code
+.get-windows()
+=end code
+
+Takes no parameters.
+
+Returns a hoh of all of the visible windows keyed on the ID number with value
+of a hash of { :name(), :class(), :ID(), :pid() } pairs.
+
 
 =head2 Mouse
 
@@ -1326,7 +1331,7 @@ class Xdo is export {
     Focus a window.
     ]
     method focus-window (Window $window) {
-        sub xdo_focus_window(XDO, Window) returns int32 is native('xdo') { * };
+        sub xdo_focus_window(XDO, Window is rw) returns int32 is native('xdo') { * };
         xdo_focus_window( self.id, $window )
     }
 
@@ -1408,8 +1413,6 @@ class Xdo is export {
         xdo_window_state(self.id, $window, $action, $property)
     }
 
-
-
     #`[ # TODO not working under Cinnamon?
     Set the override_redirect value for a window. This generally means
     whether or not a window manager will manage this window.
@@ -1421,175 +1424,113 @@ class Xdo is export {
     method override-redirect (Window $window, int32 $value) {
         sub xdo_set_window_override_redirect(XDO, Window, int32 ) returns int32 is native('xdo') { * };
         xdo_set_window_override_redirect(self.id, $window, $value)
-   }
-
-   #`[
-   Search for windows.
-
-   search: the search query.
-   * @param windowlist_ret the list of matching windows to return
-   * @param nwindows_ret the number of windows (length of windowlist_ret)
-   * @see xdo_search_t
-   */
-  int xdo_search_windows(const xdo_t *xdo, const xdo_search_t *search,
-                        Window **windowlist_ret, unsigned int *nwindows_ret);
-
-   # search bitmask bits
-   #define SEARCH_TITLE       (1UL << 0) DEPRECATED - Use SEARCH_NAME
-   #define SEARCH_CLASS       (1UL << 1)
-   #define SEARCH_NAME        (1UL << 2)
-   #define SEARCH_PID         (1UL << 3)
-   #define SEARCH_ONLYVISIBLE (1UL << 4)
-   #define SEARCH_SCREEN      (1UL << 5)
-   #define SEARCH_CLASSNAME   (1UL << 6)
-   #define SEARCH_DESKTOP     (1UL << 7)
-
-    class search-struct is repr('CStruct') {
-        has str   $.title;            # regex pattern to test against a window title
-        has str   $.winclass;         # regex pattern to test against a window class
-        has str   $.winclassname;     # regex pattern to test against a window class
-        has str   $.winname;          # regex pattern to test against a window name
-        has int   $.pid;              # window pid (From window atom _NET_WM_PID)
-        has long  $.max_depth = 1;    # depth of search. 1 means only toplevel windows
-        has int   $.only_visible = 1; # boolean; set true to search only visible windows
-        has int   $.screen;           # what screen to search, if any. If none given, search all
-
-        # Should the tests be 'and' 0 or 'or' 1 ? If 'and', any failure will skip the
-        # window. If 'or', any success will keep the window in search results.
-        has int   $.require = 0;
-
-        # bitmask of things you are searching for, such as SEARCH_NAME, etc.
-        # @see SEARCH_NAME, SEARCH_CLASS, SEARCH_PID, SEARCH_CLASSNAME, etc
-
-        has long $.searchmask = 2;
-
-        # What desktop to search, if any. If none given, search all screens. */
-        has long $.desktop;
-
-        # How many results to return? If 0, return all. */
-        has uint32 $.limit = 0;
     }
 
-    method search-windows (str $string) {
-        my $query = search-struct.new(:winname($string), :searchmask(2));
-        dd $query;
-        my Pointer $ids;
-        sub xdo_search_windows(XDO, search-struct, Pointer, int32 ) returns int32 is native('xdo') { * };
-        my int32 $n;
-        say xdo_search_windows(self.id, $query, $ids, $n);
-        $ids.deref
-   }
-   ]
-
-   method search ($query, :$visible = True, :$depth = 0) {
-       my $v = $visible ?? '--onlyvisible'     !! '';
-       my $s = $depth   ?? "--maxdepth $depth" !! '';
-       (shell "xdotool search --onlyvisible  --name \"$query\"", :out, :err).out.lines».Int;
-   }
 
 
-   #`[
-   Minimize a window.
-   ]
-   method minimize (Window $window) {
-       sub xdo_minimize_window(XDO, Window) returns int32 is native('xdo') { * };
-       xdo_minimize_window(self.id, $window)
-   }
+    #`[
+    Minimize a window.
+    ]
+    method minimize (Window $window) {
+        sub xdo_minimize_window(XDO, Window) returns int32 is native('xdo') { * };
+        xdo_minimize_window(self.id, $window)
+    }
 
-   #`[
-   Map a window. This mostly means to make the window visible if it is
-   not currently mapped.
+    #`[
+    Map a window. This mostly means to make the window visible if it is
+    not currently mapped.
 
-   @param wid the window to map.
-   ]
-   method map-window (Window $window) {
-       sub xdo_map_window(XDO, Window) returns int32 is native('xdo') { * };
-       xdo_map_window(self.id, $window)
-   }
+    @param wid the window to map.
+    ]
+    method map-window (Window $window) {
+        sub xdo_map_window(XDO, Window) returns int32 is native('xdo') { * };
+        xdo_map_window(self.id, $window)
+    }
 
-   #`[
-   Unmap a window
+    #`[
+    Unmap a window
 
-   @param wid the window to unmap
-   ]
-   method unmap-window (Window $window) {
-       sub xdo_unmap_window(XDO, Window) returns int32 is native('xdo') { * };
-       xdo_unmap_window(self.id, $window)
-   }
+    @param wid the window to unmap
+    ]
+    method unmap-window (Window $window) {
+        sub xdo_unmap_window(XDO, Window) returns int32 is native('xdo') { * };
+        xdo_unmap_window(self.id, $window)
+    }
 
-   #`[
-   Move a window to a specific location.
+    #`[
+    Move a window to a specific location.
 
-   The top left corner of the window will be moved to the x,y coordinate.
+    The top left corner of the window will be moved to the x,y coordinate.
 
-     param window the window to move
-     param x the X coordinate to move to.
-     param y the Y coordinate to move to.
-   ]
-   method move-window (Window $window, int32 $x, int32 $y) {
-       sub xdo_move_window(XDO, Window, int32, int32) returns int32 is native('xdo') { * };
-       xdo_move_window(self.id, $window, $x, $y)
-   }
+      param window the window to move
+      param x the X coordinate to move to.
+      param y the Y coordinate to move to.
+    ]
+    method move-window (Window $window, int32 $x, int32 $y) {
+        sub xdo_move_window(XDO, Window, int32, int32) returns int32 is native('xdo') { * };
+        xdo_move_window(self.id, $window, $x, $y)
+    }
 
-   method get_symbol_map () {
-       ['alt'    => 'Alt_L',
-       'ctrl'    => 'Control_L',
-       'control' => 'Control_L',
-       'meta'    => 'Meta_L',
-       'super'   => 'Super_L',
-       'shift'   => 'Shift_L',
-       Nil       => Nil
-       ]
-   }
+    method get_symbol_map () {
+        [
+          'alt'    => 'Alt_L',
+          'ctrl'    => 'Control_L',
+          'control' => 'Control_L',
+          'meta'    => 'Meta_L',
+          'super'   => 'Super_L',
+          'shift'   => 'Shift_L',
+          Nil       => Nil
+        ]
+    }
 
-   #`[
-    Query the viewport (your display) dimensions
+    #`[
+     Query the viewport (your display) dimensions
 
-     If Xinerama is active and supported, that api internally is used.
-     If Xineram is disabled, we will report the root window's dimensions
-     for the given screen.
-   ]
-   method get-desktop-dimensions (Screen-index $screen? is copy) {
-       my uint32 ($width, $height);
-       $screen //= 0;
-       sub xdo_get_viewport_dimensions(XDO, uint32 is rw, uint32 is rw, Screen-index) returns int32 is native('xdo') { * };
-       xdo_get_viewport_dimensions(self.id, $width, $height, $screen);
-       $width, $height, $screen +& 15;
-   }
+      If Xinerama is active and supported, that api internally is used.
+      If Xineram is disabled, we will report the root window's dimensions
+      for the given screen.
+    ]
+    method get-desktop-dimensions (Screen-index $screen? is copy) {
+        my uint32 ($width, $height);
+        $screen //= 0;
+        sub xdo_get_viewport_dimensions(XDO, uint32 is rw, uint32 is rw, Screen-index) returns int32 is native('xdo') { * };
+        xdo_get_viewport_dimensions(self.id, $width, $height, $screen);
+        $width, $height, $screen +& 15;
+    }
 
-   #`[
-   Set the number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
+    #`[
+    Set the number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
 
-     param ndesktops the new number of desktops to set.
-   ]
-   method set-number-of-desktops (long $number) {
-       sub xdo_set_number_of_desktops(XDO, long) returns int32 is native('xdo') { * };
-       xdo_set_number_of_desktops(self.id, $number)
-   }
+      param ndesktops the new number of desktops to set.
+    ]
+    method set-number-of-desktops (long $number) {
+        sub xdo_set_number_of_desktops(XDO, long) returns int32 is native('xdo') { * };
+        xdo_set_number_of_desktops(self.id, $number)
+    }
 
-   #`[
-   Get the current number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
+    #`[
+    Get the current number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
 
-     param ndesktops pointer to long where the current number of desktops is
-   ]
-   method get-number-of-desktops () {
-       my $number := CArray[long].new;
-       $number[0] = -2;
-       sub xdo_get_number_of_desktops(XDO, CArray) returns int32 is native('xdo') { * };
-       xdo_get_number_of_desktops(self.id, $number);
-       $number[0]
-   }
+      param ndesktops pointer to long where the current number of desktops is
+    ]
+    method get-number-of-desktops () {
+        my $number := CArray[long].new;
+        $number[0] = -2;
+        sub xdo_get_number_of_desktops(XDO, CArray) returns int32 is native('xdo') { * };
+        xdo_get_number_of_desktops(self.id, $number);
+        $number[0]
+    }
 
 
-   #`[
-   Switch to another desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
+    #`[
+    Switch to another desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
 
       param desktop The desktop number to switch to.
-   ]
-   method set-current-desktop (long $number) {
-       sub xdo_set_current_desktop(XDO, long) returns int32 is native('xdo') { * };
-       xdo_set_current_desktop(self.id, $number)
-   }
+    ]
+    method set-current-desktop (long $number) {
+        sub xdo_set_current_desktop(XDO, long) returns int32 is native('xdo') { * };
+        xdo_set_current_desktop(self.id, $number)
+    }
 
 
    #`[
@@ -1617,43 +1558,114 @@ class Xdo is export {
        xdo_set_desktop_for_window(self.id, $window, $number)
    }
 
-   #`[
-   Get the desktop a window is on. Uses _NET_WM_DESKTOP of the EWMH spec.
+    #`[
+    Get the desktop a window is on. Uses _NET_WM_DESKTOP of the EWMH spec.
 
-   If your desktop does not support _NET_WM_DESKTOP, then '*desktop' remains
-   unmodified.
+    If your desktop does not support _NET_WM_DESKTOP, then '*desktop' remains
+    unmodified.
 
      param wid the window to query
-     param deskto pointer to long where the desktop of the window is stored
-   ]
-   method get-desktop-for-window (Window $window) {
-       my $number := CArray[long].new;
-       $number[0] = -2;
-       sub xdo_get_desktop_for_window(XDO, Window, CArray) returns int32 is native('xdo') { * };
-       xdo_get_desktop_for_window(self.id, $window, $number);
-       $number[0]
-   }
+     param desktop pointer to long where the desktop of the window is stored
+    ]
+    method get-desktop-for-window (Window $window) {
+        my $number := CArray[long].new;
+        $number[0] = -2;
+        sub xdo_get_desktop_for_window(XDO, Window, CArray) returns int32 is native('xdo') { * };
+        xdo_get_desktop_for_window(self.id, $window, $number);
+        $number[0]
+    }
 
-   #`[
-   Get the position of the current viewport.
+    #`[
+    Get the position of the current viewport.
 
-   This is only relevant if your window manager supports _NET_DESKTOP_VIEWPORT
-   ]
-   method get-desktop-viewport () {
-       my int32 ($x_ret, $y_ret);
-       sub xdo_get_desktop_viewport(XDO, int32, int32) returns int32 is native('xdo') { * };
-       xdo_get_desktop_viewport(self.id, $x_ret, $y_ret);
-       $x_ret, $y_ret
-   }
+    This is only relevant if your window manager supports _NET_DESKTOP_VIEWPORT
+    ]
+    method get-desktop-viewport () {
+        my int32 ($x_ret, $y_ret);
+        sub xdo_get_desktop_viewport(XDO, int32, int32) returns int32 is native('xdo') { * };
+        xdo_get_desktop_viewport(self.id, $x_ret, $y_ret);
+        $x_ret, $y_ret
+    }
 
-   #`[
-   Set the position of the current viewport.
+    #`[
+    Set the position of the current viewport.
 
-   This is only relevant if your window manager supports _NET_DESKTOP_VIEWPORT
-   ]
-   method set-desktop-viewport ($x, $y) {
-       sub xdo_set_desktop_viewport(XDO, int32, int32) returns int32 is native('xdo') { * };
-       xdo_set_desktop_viewport(self.id, $x, $y)
-   }
+    This is only relevant if your window manager supports _NET_DESKTOP_VIEWPORT
+    ]
+    method set-desktop-viewport ($x, $y) {
+        sub xdo_set_desktop_viewport(XDO, int32, int32) returns int32 is native('xdo') { * };
+        xdo_set_desktop_viewport(self.id, $x, $y)
+    }
 
+
+
+    # Horrible hack frankensteined together from bits of libxdo and the Perl 6
+    # X11::Xlib::Raw module to work around shortcomings / bugs in both.
+    method get-windows () {
+        my $display = XOpenDisplay("") or die 'Cannot open display';
+        my $rootwin = $display.DefaultRootWindow;
+        my $children := Pointer[Window].new;
+
+        my %windows;
+
+        get-children($display, $rootwin);
+
+        for %windows.keys -> $w {
+            %windows{$w}<name> = self.get-window-name(%windows{$w}<ID>);
+            %windows{$w}<pid>  = self.get-window-pid(%windows{$w}<ID>);
+        }
+
+        sub get-children ($display, $window, $depth = 1) {
+            #############################################################
+            ## Need to include / modify some bits from NativeHelpers::Pointer
+            ## Sigh,.
+            #############################################################
+            use nqp;
+            NativeCall::Types::Pointer.^add_multi_method('add', method (Pointer:D: Int $off) {
+                my \type = self.of;
+                die "Can't do arithmetic with a void pointer" if type ~~ void;
+                my int $a = nqp::unbox_i(nqp::decont(self)) + $off * nativesizeof(type);
+                nqp::box_i($a, Pointer[type]);
+            });
+
+            multi sub infix:<+>(Pointer \p, Int $off) is export {
+                p.add($off);
+            }
+            ################################################################
+
+            XQueryTree($display, $window, my Window $root, my Window $parent, $children, my uint32 $n-children);
+            return () unless $n-children;
+
+            my XWindowAttributes $attr .= new;
+            my XClassHint        $hint .= new;
+
+            my @windows = gather for ^$n-children -> $i {
+                my $w = ($children + $i).deref;
+                XGetWindowAttributes($display, $w, $attr);
+                take $w if $attr.map_state == IsViewable;
+            }
+
+            for @windows -> $w {
+                my $res_name = XGetClassHint($display, $w, $hint) ?? $hint.res_name !! '';
+                get-children($display, $w);
+                if $res_name {
+                    %windows{"$w"}<ID> = $w;
+                    %windows{"$w"}<class> = $res_name;
+                }
+            }
+        }
+        %windows
+    }
+
+    method search (*%query) {
+        my %w = self.get-windows();
+        for %query.kv -> $param, $reg {
+            note "$param is a invalid search parameter." and return ()
+              unless $param ~~ 'name'|'class'|'ID'|'pid';
+            for %w.values -> $w {
+                return $w if $w{$param} ~~ /[$reg]/
+            }
+        }
+        ()
+    }
 }
