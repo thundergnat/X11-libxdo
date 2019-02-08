@@ -1,7 +1,7 @@
 {
     "perl"          : "6",
     "name"          : "X11::libxdo",
-    "version"       : "0.1.0",
+    "version"       : "0.1.1",
     "description"   : "libxdo automation for X11",
     "authors"       : [ "Steve Schulze (thundergnat)" ],
     "provides"      : { "X11::libxdo" : "lib/X11/libxdo.pm6" },
