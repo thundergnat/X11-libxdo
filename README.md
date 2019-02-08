@@ -1,9 +1,9 @@
 NAME
 ====
 
-X11::Xdo
+X11::libxdo
 
-Version: 0.1.0
+Version: 0.1.1
 
 Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
 
