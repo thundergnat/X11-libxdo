@@ -1,4 +1,4 @@
-unit module X11::libxdo:ver<0.1.0>:auth<github:thundergnat>;
+unit module X11::libxdo:ver<0.1.1>:auth<github:thundergnat>;
 
 use NativeCall;
 use X11::Xlib::Raw;
@@ -7,9 +7,9 @@ use X11::Xlib::Raw;
 
 =head1 NAME
 
-X11::Xdo
+X11::libxdo
 
-Version: 0.1.0
+Version: 0.1.1
 
 Perl 6 bindings to the L<libxdo X11 automation library|https://github.com/jordansissel/xdotool>.
 
@@ -1298,7 +1298,7 @@ class Xdo is export {
         my $name = Pointer[Str].new;
         my int ($name-length, $name-type);
         xdo_get_window_name( self.id, $window, $name, $name-length, $name-type );
-        $name.deref;
+        $name.?deref // '';
     }
 
     #`[
@@ -1618,7 +1618,7 @@ class Xdo is export {
         sub get-children ($display, $window, $depth = 1) {
             #############################################################
             ## Need to include / modify some bits from NativeHelpers::Pointer
-            ## Sigh,.
+            ## Sigh.
             #############################################################
             use nqp;
             NativeCall::Types::Pointer.^add_multi_method('add', method (Pointer:D: Int $off) {
