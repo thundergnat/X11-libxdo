@@ -8,8 +8,9 @@ my $command = $*VM.config<os> eq 'darwin' ?? 'open' !! 'xdg-open';
 
 my $location = IO::Path.new($?FILE).dirname;
 
-shell "$command $location/test.html" or die 'Could not open test page';
-sleep 1.5;
+shell "exec $command $location/test.html" or die 'Could not open test page';
+# Needs a significant delay to allow startup
+sleep 3;
 
 my $match = 'Test Page';
 
@@ -35,9 +36,9 @@ Probably should avoid touching the mouse and keyboard completely until then if p
 {"\r\n\r\n"}
 Thanks.
 {"\r\n\r\n"}
-Meanwhile; enjoy the show 🙂. Note: if nothing happens for more than 5 seconds
+Meanwhile; enjoy the show :-). Note: if nothing happens for more than 5 seconds
  or so, you may need to cancel the install, open a web browser window, and try
- the install again. IPC is a little flaky sometimes.
+ the install again. Inter-process communication is a little flaky sometimes.
 {"\r\n\r\n"}
 END
 
@@ -45,11 +46,11 @@ if $w {
     say "Window name: ", $xdo.get-window-name( $w );
     $xdo.send-sequence($w, 'Tab');
     $xdo.type($w, "Fast Text:\r\n\r\n" ~ ("Hello World! " x 6), 1000);
-    $xdo.type($w, $para, 80000);
+    $xdo.type($w, $para, 20000);
     $xdo.activate-window($w);
 }
 
-sleep 2;
+sleep 1.5;
 
 CATCH { default { note $_; fail } }
 

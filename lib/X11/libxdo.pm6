@@ -1,4 +1,4 @@
-unit module X11::libxdo:ver<0.1.1>:auth<github:thundergnat>;
+unit module X11::libxdo:ver<0.1.2>:auth<zef:thundergnat>;
 
 use NativeCall;
 use X11::Xlib::Raw;
@@ -9,12 +9,12 @@ use X11::Xlib::Raw;
 
 X11::libxdo
 
-Version: 0.1.1
+Version: 0.1.2
 
-Perl 6 bindings to the L<libxdo X11 automation library|https://github.com/jordansissel/xdotool>.
+Raku bindings to the L<libxdo X11 automation library|https://github.com/jordansissel/xdotool>.
 
-Note: This is a WORK IN PROGRESS. The tests are under construction and many of
-them may not work on your computer. Several functions are not yet implemented,
+Note: This is a WORK IN PROGRESS. The tests are under construction and some
+may not work on your computer. Several functions are not yet implemented,
 but a large core group is.
 
 Many of the test files do not actally run tests that can be checked for
@@ -28,40 +28,44 @@ supported, others... not so much.
 
 =head1 SYNOPSIS
 
-    use X11::libxdo;
+=begin code :lang<raku>
 
-    my $xdo = Xdo.new;
+use X11::libxdo;
 
-    say 'Version: ', $xdo.version;
+my $xdo = Xdo.new;
 
-    say 'Active window id: ', my $active = $xdo.get-active-window;
+say 'Version: ', $xdo.version;
 
-    say 'Active window title: ', $xdo.get-window-name($active);
+say 'Active window id: ', my $active = $xdo.get-active-window;
 
-    say "Pause for a bit...";
-    sleep 4; # pause for a bit
+say 'Active window title: ', $xdo.get-window-name($active);
 
-    loop {
-        my ($x, $y, $window-id, $screen) = $xdo.get-mouse-info;
-        my $name = (try $xdo.get-window-name($window-id) if $window-id)
-           // 'No name set';
+say "Pause for a bit...";
+sleep 4; # pause for a bit
 
-        my $line = "Mouse location: $x, $y, Window under mouse - ID: " ~
-           $window-id ~ ', Name: ' ~ $name ~ ", Screen #: $screen";
+loop {
+    my ($x, $y, $window-id, $screen) = $xdo.get-mouse-info;
+    my $name = (try $xdo.get-window-name($window-id) if $window-id)
+       // 'No name set';
 
-        print "\e[H\e[JMove mouse around screen; move to top to exit.\n", $line;
+    my $line = "Mouse location: $x, $y, Window under mouse - ID: " ~
+       $window-id ~ ', Name: ' ~ $name ~ ", Screen #: $screen";
 
-        # exit if pointer moved to top of screen
-        say '' and last if $y < 1;
+    print "\e[H\e[JMove mouse around screen; move to top to exit.\n", $line;
 
-        # update periodically.
-        sleep .05;
-    }
+    # exit if pointer moved to top of screen
+    say '' and last if $y < 1;
+
+    # update periodically.
+    sleep .05;
+}
+
+=end code
 
 
 =head1 DESCRIPTION
 
-Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
+Raku bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
 
 Requires that libxdo-dev library is installed and accessible.
 
@@ -96,7 +100,7 @@ There are several broad categories of methods available.
 
 =head2 Miscellaneous
 
-=begin code
+=begin code :lang<raku>
 .version()
 =end code
 
@@ -107,7 +111,7 @@ Takes no parameters.
 Returns the version string of the current libxdo library.
 
 --
-=begin code
+=begin code :lang<raku>
 .get_symbol_map()
 =end code
 
@@ -118,12 +122,12 @@ Takes no parameters.
 Returns an array of modifier symbol pairs.
 
 --
-=begin code
+=begin code :lang<raku>
 .search(%query)
 =end code
 
 Reimplementation of the libxdo search function to give greater flexibility under
-Perl 6.
+Raku.
 
 May seach for a name, class, ID or pid or any combination, against a string / regex.
 
@@ -133,9 +137,9 @@ Search for an open window where the title contains the exact string 'libxdo':
 
      .search( :name('libxdo') )
 
-Search for an open window where the title contains 'Perl' case insensitvely:
+Search for an open window where the title contains 'Raku' case insensitvely:
 
-     .search( :name(rx:i['perl']) )
+     .search( :name(rx:i['raku']) )
 
 Returns a hash { :name(), :class(), :ID(), :pid() } pairs of the first match
 found for one of the search parameters.
@@ -144,7 +148,7 @@ if you need more granularity or control over the search, use get-windows to get
 a hash of all of the visible windows and search through them manually.
 
 --
-=begin code
+=begin code :lang<raku>
 .get-windows()
 =end code
 
@@ -156,7 +160,7 @@ of a hash of { :name(), :class(), :ID(), :pid() } pairs.
 
 =head2 Mouse
 
-=begin code
+=begin code :lang<raku>
 .move-mouse( $x, $y, $screen )
 =end code
 
@@ -171,7 +175,7 @@ Takes three parameters:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .move-mouse-relative( $delta-x, $delta-y )
 =end code
 
@@ -185,7 +189,7 @@ Takes two parameters:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .move-mouse-relative-to-window( $x, $y, $window )
 =end code
 
@@ -201,7 +205,7 @@ Takes three parameters:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .get-mouse-location()
 =end code
 
@@ -216,7 +220,7 @@ Returns three integers:
 =item int $screen:  the index number of the screen the mouse pointer is located on.
 
 --
-=begin code
+=begin code :lang<raku>
 .get-mouse-info()
 =end code
 
@@ -232,7 +236,7 @@ Returns four integers:
 =item int $screen:  the index number of the screen the mouse pointer is located on.
 
 --
-=begin code
+=begin code :lang<raku>
 .wait-for-mouse-to-move-from( $origin-x, $origin-y )
 =end code
 
@@ -247,7 +251,7 @@ Takes two integer parameters:
 Returns nothing.
 
 --
-=begin code
+=begin code :lang<raku>
 .wait-for-mouse-to-move-to( $dest-x, $dest-y )
 =end code
 
@@ -262,7 +266,7 @@ Takes two integer parameters:
 Returns nothing.
 
 --
-=begin code
+=begin code :lang<raku>
 .mouse-button-down( $window, $button )
 =end code
 
@@ -277,7 +281,7 @@ Takes two parameters:
 Returns nothing.
 
 --
-=begin code
+=begin code :lang<raku>
 .mouse-button-up( $window, $button )
 =end code
 
@@ -292,7 +296,7 @@ Takes two parameters:
 Returns nothing.
 
 --
-=begin code
+=begin code :lang<raku>
 .mouse-button-click( $window, $button )
 =end code
 
@@ -306,7 +310,7 @@ Takes two parameters:
 Returns nothing.
 
 --
-=begin code
+=begin code :lang<raku>
 .mouse-button-multiple( $window, $button, $repeat = 2, $delay? )
 =end code
 
@@ -323,7 +327,7 @@ Takes three parameters:
 Returns nothing.
 
 --
-=begin code
+=begin code :lang<raku>
 .get-window-under-mouse()
 =end code
 
@@ -336,7 +340,7 @@ Returns the ID of the topmost window under the mouse.
 
 =head2 Window
 
-=begin code
+=begin code :lang<raku>
 .get-active-window()
 =end code
 
@@ -349,7 +353,7 @@ Returns one integer:
 =item $screen:  Window ID of active window.
 
 --
-=begin code
+=begin code :lang<raku>
 .select-window-with-mouse()
 =end code
 
@@ -363,7 +367,7 @@ Returns one integer:
 =item $screen:  Window ID of active window.
 
 --
-=begin code
+=begin code :lang<raku>
 .get-window-location( $window?, $scrn? )
 =end code
 
@@ -381,7 +385,7 @@ Returns three integers:
 =item $screen   index of screen the window is located on.
 
 --
-=begin code
+=begin code :lang<raku>
 .get-window-size( $window? )
 =end code
 
@@ -397,7 +401,7 @@ Returns two integers:
 =item int $height    the height of the queried window in pixels.
 
 --
-=begin code
+=begin code :lang<raku>
 .get-window-geometry( $window? )
 =end code
 
@@ -415,7 +419,7 @@ Returns standard geometry string
 left corner at 250 x position 450 y position.
 
 --
-=begin code
+=begin code :lang<raku>
 .get-window-name( $window? )
 =end code
 
@@ -430,7 +434,7 @@ Returns one string:
 =item Str $name   Name of the queried window.
 
 --
-=begin code
+=begin code :lang<raku>
 .get-window-pid( $window )
 =end code
 
@@ -446,7 +450,7 @@ Returns one integer:
 =item int $pid   process id, or 0 if no pid found.
 
 --
-=begin code
+=begin code :lang<raku>
 .set-window-size( $window, $width, $height, $flags? = 0 )
 =end code
 
@@ -473,7 +477,7 @@ HINTS:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .focus-window( $window )
 =end code
 
@@ -486,7 +490,7 @@ Takes one  parameter:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .get-focused-window( )
 =end code
 
@@ -500,7 +504,7 @@ Returns one parameter:
 
 
 --
-=begin code
+=begin code :lang<raku>
 .activate-window( $window )
 =end code
 
@@ -517,7 +521,7 @@ Takes one  parameter:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .raise-window( $window )
 =end code
 
@@ -531,7 +535,7 @@ Takes one parameter:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .minimize( $window )
 =end code
 
@@ -544,7 +548,7 @@ Takes one parameter:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .map-window( $window )
 =end code
 
@@ -558,7 +562,7 @@ Takes one parameter:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .unmap-window( $window )
 =end code
 
@@ -572,7 +576,7 @@ Takes one parameter:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .move-window( $window )
 =end code
 
@@ -589,7 +593,7 @@ Takes three parameters:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .wait_for_window_active( $window )
 =end code
 
@@ -604,7 +608,7 @@ Takes one parameter:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .close-window( $window )
 =end code
 
@@ -619,7 +623,7 @@ Takes one  parameter:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .kill-window( $window )
 =end code
 
@@ -634,7 +638,7 @@ Takes one  parameter:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .override-redirect( $window, $value )
 =end code
 
@@ -651,7 +655,7 @@ Takes two parameters:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .wait-for-window-map-state( $window, $state )
 =end code
 
@@ -670,7 +674,7 @@ Takes two parameters:
 
 
 --
-=begin code
+=begin code :lang<raku>
 .set-window-state( $window, $action, $property)
 =end code
 
@@ -683,20 +687,20 @@ Takes three parameters:
 =item str  $property: the property to change
 
 --
-=begin code
-    ACTIONS:
-    _NET_WM_STATE_REMOVE: 0 -  remove/unset property
-    _NET_WM_STATE_ADD:    1 -  add/set property
-    _NET_WM_STATE_TOGGLE: 2 -  toggle property
+=begin code :lang<raku>
+ACTIONS:
+_NET_WM_STATE_REMOVE: 0 -  remove/unset property
+_NET_WM_STATE_ADD:    1 -  add/set property
+_NET_WM_STATE_TOGGLE: 2 -  toggle property
 
-    SOME POSSIBLE PROPERTIES:
-    _NET_WM_STATE_MAXIMIZED_VERT
-    _NET_WM_STATE_MAXIMIZED_HORZ
-    _NET_WM_STATE_SHADED
-    _NET_WM_STATE_HIDDEN
-    _NET_WM_STATE_FULLSCREEN
-    _NET_WM_STATE_ABOVE
-    _NET_WM_STATE_BELOW
+SOME POSSIBLE PROPERTIES:
+_NET_WM_STATE_MAXIMIZED_VERT
+_NET_WM_STATE_MAXIMIZED_HORZ
+_NET_WM_STATE_SHADED
+_NET_WM_STATE_HIDDEN
+_NET_WM_STATE_FULLSCREEN
+_NET_WM_STATE_ABOVE
+_NET_WM_STATE_BELOW
 =end code
 
 Retuns 0 on sucess, !0 on failure
@@ -705,7 +709,7 @@ Retuns 0 on sucess, !0 on failure
 
 =head2 Keystrokes
 
-=begin code
+=begin code :lang<raku>
 .type( $window, $string, $delay? )
 =end code
 
@@ -728,7 +732,7 @@ Takes three parameters:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .send-sequence( $window, $string, $delay? )
 =end code
 
@@ -747,7 +751,7 @@ Takes three parameters:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .send-key-press( $window, $string, $delay? )
 =end code
 
@@ -764,7 +768,7 @@ Takes three parameters:
 Returns 0 on success !0 on failure.
 
 --
-=begin code
+=begin code :lang<raku>
 .send-key-release( $window, $string, $delay? )
 =end code
 
@@ -803,7 +807,7 @@ method send-keysequence-list($window = 0, Carray @keys, int $pressed, int, $modi
 
 =head2 Desktop
 
-=begin code
+=begin code :lang<raku>
 .get-desktop-dimensions( $screen? )
 =end code
 
@@ -825,7 +829,7 @@ Returns three integers:
 
 
 --
-=begin code
+=begin code :lang<raku>
 .set-number-of-desktops($number)
 =end code
 
@@ -839,7 +843,7 @@ Returns 0 on success, !0 on failure
 
 
 --
-=begin code
+=begin code :lang<raku>
 .get-number-of-desktops()
 =end code
 
@@ -852,7 +856,7 @@ Returns one integer:
 =item $number: the current number of desktops (workspaces).
 
 --
-=begin code
+=begin code :lang<raku>
 .set-current-desktop($number)
 =end code
 
@@ -864,7 +868,7 @@ Takes one parameter:
 
 
 --
-=begin code
+=begin code :lang<raku>
 .get-current-desktop()
 =end code
 
@@ -878,7 +882,7 @@ Returns one integer:
 
 
 --
-=begin code
+=begin code :lang<raku>
 .move-window-to-desktop($window, $number)
 =end code
 
@@ -892,7 +896,7 @@ Takes two parameters:
 Returns 0 on success, !0 on failure
 
 --
-=begin code
+=begin code :lang<raku>
 .get-desktop-for-window($window)
 =end code
 
@@ -909,7 +913,7 @@ Returns one integer:
 =item int $desktop: the desktop where the window is located.
 
 --
-=begin code
+=begin code :lang<raku>
 .get-desktop-viewport()
 =end code
 
@@ -925,7 +929,7 @@ Returns two values:
 =item int $y: the Y value of the top left corner of the viewport.
 
 --
-=begin code
+=begin code :lang<raku>
 .set-desktop-viewport($x, $y)
 =end code
 
@@ -973,6 +977,11 @@ class Xdo is export {
     method version() {
         sub xdo_version() returns Str is encoded('utf8') is native('xdo') { * }
         xdo_version()
+    }
+
+    method free() {
+        sub xdo_free(XDO) is native('xdo') { * };
+        xdo_free(self.id);
     }
 
     #`[
@@ -1473,7 +1482,7 @@ class Xdo is export {
 
     method get_symbol_map () {
         [
-          'alt'    => 'Alt_L',
+          'alt'     => 'Alt_L',
           'ctrl'    => 'Control_L',
           'control' => 'Control_L',
           'meta'    => 'Meta_L',
@@ -1599,7 +1608,7 @@ class Xdo is export {
 
 
 
-    # Horrible hack frankensteined together from bits of libxdo and the Perl 6
+    # Horrible hack Frankensteined together from bits of libxdo and the Raku
     # X11::Xlib::Raw module to work around shortcomings / bugs in both.
     method get-windows () {
         my $display = XOpenDisplay("") or die 'Cannot open display';

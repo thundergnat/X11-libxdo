@@ -1,4 +1,4 @@
 .precomp/
-update.sh
+/X11-libxdo-*
 xdolist.txt
 lib/X11/xdo.h

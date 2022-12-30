@@ -26,5 +26,12 @@ sleep .25;
 
 CATCH { default { fail } }
 
+my $match = 'Test Page';
+my $win = $xdo.search(:name($match))<ID>;
+sleep .5;
+$xdo.activate-window($win);
+$xdo.type($win, "\r\nMouse move seems ok", 1000) if $win;
+sleep 1;
+
 ok 1;
 done-testing;

@@ -1,15 +1,30 @@
 {
-    "perl"          : "6",
-    "name"          : "X11::libxdo",
-    "version"       : "0.1.1",
-    "description"   : "libxdo automation for X11",
-    "authors"       : [ "Steve Schulze (thundergnat)" ],
-    "provides"      : { "X11::libxdo" : "lib/X11/libxdo.pm6" },
-    "depends"       : [ "X11::Xlib::Raw" ],
-    "build-depends" : [ ],
-    "test-depends"  : [ "Test" ],
-    "source-type"   : "git",
-    "source-url"    : "git://github.com/thundergnat/X11-Xdo.git",
-    "license"       : "Artistic-2.0",
-    "tags"          : [ "X11", "automation", "mouse", "window" ]
+  "auth": "zef:thundergnat",
+  "authors": [
+    "Steve Schulze (thundergnat)"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+    "X11::Xlib::Raw"
+  ],
+  "description": "libxdo automation for X11",
+  "license": "Artistic-2.0",
+  "name": "X11::libxdo",
+  "perl": "6.d",
+  "provides": {
+    "X11::libxdo": "lib/X11/libxdo.pm6"
+  },
+  "resources": [
+  ],
+  "source-url": "git://github.com/thundergnat/X11-libxdo.git",
+  "tags": [
+    "X11",
+    "automation",
+    "mouse",
+    "window"
+  ],
+  "test-depends": [
+  ],
+  "version": "0.1.2"
 }

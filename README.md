@@ -3,11 +3,11 @@ NAME
 
 X11::libxdo
 
-Version: 0.1.1
+Version: 0.1.2
 
-Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
+Raku bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
 
-Note: This is a WORK IN PROGRESS. The tests are under construction and many of them may not work on your computer. Several functions are not yet implemented, but a large core group is.
+Note: This is a WORK IN PROGRESS. The tests are under construction and some may not work on your computer. Several functions are not yet implemented, but a large core group is.
 
 Many of the test files do not actally run tests that can be checked for correctness. (Many of the object move & resize tests for example.) Rather, they attempt to perform an action and fail/pass based on if the attempt does or doesn't produce an error.
 
@@ -16,40 +16,42 @@ Not all libxdo functions are supported by every window manager. In general, mous
 SYNOPSIS
 ========
 
-    use X11::libxdo;
+```raku
+use X11::libxdo;
 
-    my $xdo = Xdo.new;
+my $xdo = Xdo.new;
 
-    say 'Version: ', $xdo.version;
+say 'Version: ', $xdo.version;
 
-    say 'Active window id: ', my $active = $xdo.get-active-window;
+say 'Active window id: ', my $active = $xdo.get-active-window;
 
-    say 'Active window title: ', $xdo.get-window-name($active);
+say 'Active window title: ', $xdo.get-window-name($active);
 
-    say "Pause for a bit...";
-    sleep 4; # pause for a bit
+say "Pause for a bit...";
+sleep 4; # pause for a bit
 
-    loop {
-        my ($x, $y, $window-id, $screen) = $xdo.get-mouse-info;
-        my $name = (try $xdo.get-window-name($window-id) if $window-id)
-           // 'No name set';
+loop {
+    my ($x, $y, $window-id, $screen) = $xdo.get-mouse-info;
+    my $name = (try $xdo.get-window-name($window-id) if $window-id)
+       // 'No name set';
 
-        my $line = "Mouse location: $x, $y, Window under mouse - ID: " ~
-           $window-id ~ ', Name: ' ~ $name ~ ", Screen #: $screen";
+    my $line = "Mouse location: $x, $y, Window under mouse - ID: " ~
+       $window-id ~ ', Name: ' ~ $name ~ ", Screen #: $screen";
 
-        print "\e[H\e[JMove mouse around screen; move to top to exit.\n", $line;
+    print "\e[H\e[JMove mouse around screen; move to top to exit.\n", $line;
 
-        # exit if pointer moved to top of screen
-        say '' and last if $y < 1;
+    # exit if pointer moved to top of screen
+    say '' and last if $y < 1;
 
-        # update periodically.
-        sleep .05;
-    }
+    # update periodically.
+    sleep .05;
+}
+```
 
 DESCRIPTION
 ===========
 
-Perl 6 bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
+Raku bindings to the [libxdo X11 automation library](https://github.com/jordansissel/xdotool).
 
 Requires that libxdo-dev library is installed and accessible.
 
@@ -81,7 +83,9 @@ There are several broad categories of methods available.
 Miscellaneous
 -------------
 
-    .version()
+```raku
+.version()
+```
 
 Get the library version.
 
@@ -91,7 +95,9 @@ Returns the version string of the current libxdo library.
 
 --
 
-    .get_symbol_map()
+```raku
+.get_symbol_map()
+```
 
 Get modifier symbol pairs.
 
@@ -101,9 +107,11 @@ Returns an array of modifier symbol pairs.
 
 --
 
-    .search(%query)
+```raku
+.search(%query)
+```
 
-Reimplementation of the libxdo search function to give greater flexibility under Perl 6.
+Reimplementation of the libxdo search function to give greater flexibility under Raku.
 
 May seach for a name, class, ID or pid or any combination, against a string / regex.
 
@@ -113,9 +121,9 @@ Search for an open window where the title contains the exact string 'libxdo':
 
     .search( :name('libxdo') )
 
-Search for an open window where the title contains 'Perl' case insensitvely:
+Search for an open window where the title contains 'Raku' case insensitvely:
 
-    .search( :name(rx:i['perl']) )
+    .search( :name(rx:i['raku']) )
 
 Returns a hash { :name(), :class(), :ID(), :pid() } pairs of the first match found for one of the search parameters.
 
@@ -123,7 +131,9 @@ if you need more granularity or control over the search, use get-windows to get 
 
 --
 
-    .get-windows()
+```raku
+.get-windows()
+```
 
 Takes no parameters.
 
@@ -132,7 +142,9 @@ Returns a hoh of all of the visible windows keyed on the ID number with value of
 Mouse
 -----
 
-    .move-mouse( $x, $y, $screen )
+```raku
+.move-mouse( $x, $y, $screen )
+```
 
 Move the mouse to a specific location.
 
@@ -148,7 +160,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .move-mouse-relative( $delta-x, $delta-y )
+```raku
+.move-mouse-relative( $delta-x, $delta-y )
+```
 
 Move the mouse relative to it's current position.
 
@@ -162,7 +176,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .move-mouse-relative-to-window( $x, $y, $window )
+```raku
+.move-mouse-relative-to-window( $x, $y, $window )
+```
 
 Move the mouse to a specific location relative to the top-left corner of a window.
 
@@ -178,7 +194,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .get-mouse-location()
+```raku
+.get-mouse-location()
+```
 
 Get the current mouse location (coordinates and screen ID number).
 
@@ -194,7 +212,9 @@ Returns three integers:
 
 --
 
-    .get-mouse-info()
+```raku
+.get-mouse-info()
+```
 
 Get all mouse location-related data.
 
@@ -212,7 +232,9 @@ Returns four integers:
 
 --
 
-    .wait-for-mouse-to-move-from( $origin-x, $origin-y )
+```raku
+.wait-for-mouse-to-move-from( $origin-x, $origin-y )
+```
 
 Wait for the mouse to move from a location. This function will block until the condition has been satisfied.
 
@@ -226,7 +248,9 @@ Returns nothing.
 
 --
 
-    .wait-for-mouse-to-move-to( $dest-x, $dest-y )
+```raku
+.wait-for-mouse-to-move-to( $dest-x, $dest-y )
+```
 
 Wait for the mouse to move to a location. This function will block until the condition has been satisfied.
 
@@ -240,7 +264,9 @@ Returns nothing.
 
 --
 
-    .mouse-button-down( $window, $button )
+```raku
+.mouse-button-down( $window, $button )
+```
 
 Send a mouse press (aka mouse down) for a given button at the current mouse location.
 
@@ -254,7 +280,9 @@ Returns nothing.
 
 --
 
-    .mouse-button-up( $window, $button )
+```raku
+.mouse-button-up( $window, $button )
+```
 
 Send a mouse release (aka mouse up) for a given button at the current mouse location.
 
@@ -268,7 +296,9 @@ Returns nothing.
 
 --
 
-    .mouse-button-click( $window, $button )
+```raku
+.mouse-button-click( $window, $button )
+```
 
 Send a click for a specific mouse button at the current mouse location.
 
@@ -282,7 +312,9 @@ Returns nothing.
 
 --
 
-    .mouse-button-multiple( $window, $button, $repeat = 2, $delay? )
+```raku
+.mouse-button-multiple( $window, $button, $repeat = 2, $delay? )
+```
 
 Send a one or more clicks of a specific mouse button at the current mouse location.
 
@@ -300,7 +332,9 @@ Returns nothing.
 
 --
 
-    .get-window-under-mouse()
+```raku
+.get-window-under-mouse()
+```
 
 Get the window the mouse is currently over
 
@@ -311,7 +345,9 @@ Returns the ID of the topmost window under the mouse.
 Window
 ------
 
-    .get-active-window()
+```raku
+.get-active-window()
+```
 
 Get the currently-active window. Requires your window manager to support this.
 
@@ -323,7 +359,9 @@ Returns one integer:
 
 --
 
-    .select-window-with-mouse()
+```raku
+.select-window-with-mouse()
+```
 
 Get a window ID by clicking on it. This function blocks until a selection is made.
 
@@ -335,7 +373,9 @@ Returns one integer:
 
 --
 
-    .get-window-location( $window?, $scrn? )
+```raku
+.get-window-location( $window?, $scrn? )
+```
 
 Get a window's location.
 
@@ -355,7 +395,9 @@ Returns three integers:
 
 --
 
-    .get-window-size( $window? )
+```raku
+.get-window-size( $window? )
+```
 
 Get a window's size.
 
@@ -371,7 +413,9 @@ Returns two integers:
 
 --
 
-    .get-window-geometry( $window? )
+```raku
+.get-window-geometry( $window? )
+```
 
 Get a windows geometry string.
 
@@ -387,7 +431,9 @@ Returns standard geometry string
 
 --
 
-    .get-window-name( $window? )
+```raku
+.get-window-name( $window? )
+```
 
 Get a window's name, if any.
 
@@ -401,7 +447,9 @@ Returns one string:
 
 --
 
-    .get-window-pid( $window )
+```raku
+.get-window-pid( $window )
+```
 
 Get the PID or the process owning a window. Not all applications support this. It looks at the _NET_WM_PID property of the window.
 
@@ -415,7 +463,9 @@ Returns one integer:
 
 --
 
-    .set-window-size( $window, $width, $height, $flags? = 0 )
+```raku
+.set-window-size( $window, $width, $height, $flags? = 0 )
+```
 
 Set the window size.
 
@@ -443,7 +493,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .focus-window( $window )
+```raku
+.focus-window( $window )
+```
 
 Set the focus on a window.
 
@@ -455,7 +507,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .get-focused-window( )
+```raku
+.get-focused-window( )
+```
 
 Get the ID of the window currently having focus.
 
@@ -467,7 +521,9 @@ Returns one parameter:
 
 --
 
-    .activate-window( $window )
+```raku
+.activate-window( $window )
+```
 
 Activate a window. This is generally a better choice than .focus_window for a variety of reasons, but it requires window manager support.
 
@@ -483,7 +539,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .raise-window( $window )
+```raku
+.raise-window( $window )
+```
 
 Raise a window to the top of the window stack. This is also sometimes termed as bringing the window forward.
 
@@ -495,7 +553,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .minimize( $window )
+```raku
+.minimize( $window )
+```
 
 Minimize a window.
 
@@ -507,7 +567,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .map-window( $window )
+```raku
+.map-window( $window )
+```
 
 Map a window. This mostly means to make the window visible if it is not currently mapped.
 
@@ -519,7 +581,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .unmap-window( $window )
+```raku
+.unmap-window( $window )
+```
 
 Unmap a window. This means to make the window invisible and possibly remove it from the task bar on some WMs.
 
@@ -531,7 +595,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .move-window( $window )
+```raku
+.move-window( $window )
+```
 
 Move a window to a specific location.
 
@@ -549,7 +615,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .wait_for_window_active( $window )
+```raku
+.wait_for_window_active( $window )
+```
 
 Wait for a window to be active or not active. Requires your window manager to support this. Uses _NET_ACTIVE_WINDOW from the EWMH spec.
 
@@ -561,7 +629,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .close-window( $window )
+```raku
+.close-window( $window )
+```
 
 TODO not working under Cinnamon?
 
@@ -575,7 +645,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .kill-window( $window )
+```raku
+.kill-window( $window )
+```
 
 TODO not working under Cinnamon?
 
@@ -589,7 +661,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .override-redirect( $window, $value )
+```raku
+.override-redirect( $window, $value )
+```
 
 TODO not working under Cinnamon?
 
@@ -605,7 +679,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .wait-for-window-map-state( $window, $state )
+```raku
+.wait-for-window-map-state( $window, $state )
+```
 
 Wait for a window to have a specific map state.
 
@@ -625,7 +701,9 @@ Takes two parameters:
 
 --
 
-    .set-window-state( $window, $action, $property)
+```raku
+.set-window-state( $window, $action, $property)
+```
 
 Change window state
 
@@ -639,26 +717,30 @@ Takes three parameters:
 
 --
 
-        ACTIONS:
-        _NET_WM_STATE_REMOVE: 0 -  remove/unset property
-        _NET_WM_STATE_ADD:    1 -  add/set property
-        _NET_WM_STATE_TOGGLE: 2 -  toggle property
+```raku
+ACTIONS:
+_NET_WM_STATE_REMOVE: 0 -  remove/unset property
+_NET_WM_STATE_ADD:    1 -  add/set property
+_NET_WM_STATE_TOGGLE: 2 -  toggle property
 
-        SOME POSSIBLE PROPERTIES:
-        _NET_WM_STATE_MAXIMIZED_VERT
-        _NET_WM_STATE_MAXIMIZED_HORZ
-        _NET_WM_STATE_SHADED
-        _NET_WM_STATE_HIDDEN
-        _NET_WM_STATE_FULLSCREEN
-        _NET_WM_STATE_ABOVE
-        _NET_WM_STATE_BELOW
+SOME POSSIBLE PROPERTIES:
+_NET_WM_STATE_MAXIMIZED_VERT
+_NET_WM_STATE_MAXIMIZED_HORZ
+_NET_WM_STATE_SHADED
+_NET_WM_STATE_HIDDEN
+_NET_WM_STATE_FULLSCREEN
+_NET_WM_STATE_ABOVE
+_NET_WM_STATE_BELOW
+```
 
 Retuns 0 on sucess, !0 on failure
 
 Keystrokes
 ----------
 
-    .type( $window, $string, $delay? )
+```raku
+.type( $window, $string, $delay? )
+```
 
 Type a string to the specified window.
 
@@ -678,7 +760,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .send-sequence( $window, $string, $delay? )
+```raku
+.send-sequence( $window, $string, $delay? )
+```
 
 This allows you to send keysequences by symbol name. Any combination of X11 KeySym names separated by '+' are valid. Single KeySym names are valid, too.
 
@@ -696,7 +780,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .send-key-press( $window, $string, $delay? )
+```raku
+.send-key-press( $window, $string, $delay? )
+```
 
 Send key press (down) events for the given key sequence.
 
@@ -714,7 +800,9 @@ Returns 0 on success !0 on failure.
 
 --
 
-    .send-key-release( $window, $string, $delay? )
+```raku
+.send-key-release( $window, $string, $delay? )
+```
 
 Send key release (up) events for the given key sequence.
 
@@ -733,7 +821,9 @@ Returns 0 on success !0 on failure.
 Desktop
 -------
 
-    .get-desktop-dimensions( $screen? )
+```raku
+.get-desktop-dimensions( $screen? )
+```
 
 Query the viewport (your display) dimensions
 
@@ -753,7 +843,9 @@ Returns three integers:
 
 --
 
-    .set-number-of-desktops($number)
+```raku
+.set-number-of-desktops($number)
+```
 
 Set the number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
 
@@ -765,7 +857,9 @@ Returns 0 on success, !0 on failure
 
 --
 
-    .get-number-of-desktops()
+```raku
+.get-number-of-desktops()
+```
 
 Get the current number of desktops. Uses _NET_NUMBER_OF_DESKTOPS of the EWMH spec.
 
@@ -777,7 +871,9 @@ Returns one integer:
 
 --
 
-    .set-current-desktop($number)
+```raku
+.set-current-desktop($number)
+```
 
 Switch to another desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
 
@@ -787,7 +883,9 @@ Takes one parameter:
 
 --
 
-    .get-current-desktop()
+```raku
+.get-current-desktop()
+```
 
 Get the current desktop. Uses _NET_CURRENT_DESKTOP of the EWMH spec.
 
@@ -799,7 +897,9 @@ Returns one integer:
 
 --
 
-    .move-window-to-desktop($window, $number)
+```raku
+.move-window-to-desktop($window, $number)
+```
 
 Move a window to another desktop. Uses _NET_WM_DESKTOP of the EWMH spec.
 
@@ -813,7 +913,9 @@ Returns 0 on success, !0 on failure
 
 --
 
-    .get-desktop-for-window($window)
+```raku
+.get-desktop-for-window($window)
+```
 
 Get the desktop a window is on. Uses _NET_WM_DESKTOP of the EWMH spec.
 
@@ -829,7 +931,9 @@ Returns one integer:
 
 --
 
-    .get-desktop-viewport()
+```raku
+.get-desktop-viewport()
+```
 
 Get the position of the current viewport.
 
@@ -845,7 +949,9 @@ Returns two values:
 
 --
 
-    .set-desktop-viewport($x, $y)
+```raku
+.set-desktop-viewport($x, $y)
+```
 
 Set the position of the current viewport.
 

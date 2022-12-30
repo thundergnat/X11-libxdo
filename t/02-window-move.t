@@ -2,7 +2,10 @@ use Test;
 use X11::libxdo;
 my $xdo = Xdo.new;
 
-my $id = $xdo.get-active-window();
+my $match = 'Test Page';
+my $id = $xdo.search(:name($match))<ID>;
+sleep .5;
+$xdo.activate-window($id);
 
 my ($w,  $h ) = $xdo.get-window-size( $id );
 my ($wx, $wy) = $xdo.get-window-location( $id );
@@ -27,6 +30,9 @@ $xdo.move-window( $id, $wx, $wy );
 $xdo.activate-window($id);
 
 CATCH { default { fail } }
+
+$xdo.type($id, "\r\nWindow move seems ok", 1000) if $id;
+sleep 1;
 
 ok 1;
 
