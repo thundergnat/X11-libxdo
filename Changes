@@ -1,4 +1,6 @@
 Revision history for X11-libxdo
 
 {{$NEXT}}
+
+0.1.2  2022-12-30T18:39:23-05:00
     - Migrate to fez ecosystem
